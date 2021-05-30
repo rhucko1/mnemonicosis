@@ -6,7 +6,7 @@
 		<script language="JavaScript" type="text/javascript">
 		<!--
 		/*
-		Mnemonicosis JavaScript, by Richard Hucko (FEB 2018)
+		Mnemonicosis JavaScript, by Richard Hucko (DEC 2019)
 		
 		Created with ideas from Curtis Kam
 		
@@ -31,6 +31,7 @@
 		// - Hide certain buttons as options and displays if others are selected (mimics state of real world conditions better)
 		// - Added UTF-8 Misc characters for Suit characters using html entities
 		// - Added Spectator's Names and Spelling of Cards for better posibilities and to make more realistic.
+		// - Added Four of a kind and suit options
 		////////////////////////////////////////////////////////////////
 		var DECK="J&spades; K&clubs; 5&clubs; 2&hearts; 9&spades; A&spades; 3&hearts; 6&clubs; 8&diams; A&clubs; 10&spades; 5&hearts; 2&diams; K&diams; 7&diams; 8&clubs; 3&spades; A&diams; 7&spades; 5&spades; Q&diams; A&hearts; 8&spades; 3&diams; 7&hearts; Q&hearts; 5&diams; 7&clubs; 4&hearts; K&hearts; 4&diams; 10&diams; J&clubs; J&hearts; 10&clubs; J&diams; 4&spades; 10&hearts; 6&hearts; 3&clubs; 2&spades; 9&hearts; K&spades; 6&spades; 4&clubs; 8&hearts; 9&clubs; Q&spades; 6&diams; Q&clubs; 2&clubs; 9&diams;";
 		//MNEMONICA: "4C 2H 7D 3C 4H 6D AS 5H 9S 2S QH 3D QC 8H 6S 5S 9H KC 2D JH 3S 8S 6H 10C 5D KD 2C 3H 8D 5C KS JD 8C 10S KH JC 7S 10H AD 4S 7H 4D AC 9C JS QD 7C QS 10D 6C AH 9D"; 
@@ -350,7 +351,7 @@
 			var operator=(ge(pos,pos2))?"-":"+";
 			var tolerance=(operator==="-")?pos-pos2:pos2-pos;
 			if(tolerance>1)
-				guess=getRand(1,tolerance);
+				guess=getRand(1,tolerance+1);
 			else
 				guess=tolerance;
 			
@@ -531,6 +532,56 @@
 			document.getElementById('posbottom2').style.display='none';
 			document.getElementById('guess').style.display='none'; // Hide guess
 		}
+		function guessGroup(gtype)
+		{
+			
+			document.getElementById('alert').innerHTML='<h1>Choose a '+gtype+':</h1>';
+			document.getElementById('alert').style.color='black';
+			document.getElementById('alert').style.visibility='visible';			
+			
+			// Four of a Kind or Suit..? set max
+			var maxg=(gtype.indexOf("Four") == -1)?13:4;
+			
+			//alert(maxg);
+			
+			if(maxg==4)
+			{
+				for(var x=1;x<=13;x++)
+				{
+					y=(x==1)?'A':(x==11)?'J':(x==12)?'Q':(x==13)?'K':x;
+					document.getElementById('alert').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
+				}
+			}
+			else
+			{
+				for(var x=1;x<=4;x++)
+				{
+					y=(x==1)?'clubs':(x==2)?'hearts':(x==3)?'spades':(x==4)?'diams':x;
+					document.getElementById('alert').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
+				
+				}
+			}
+		}
+		function valG(valg)
+		{
+			valg=valg.trim();
+			//alert(valg);
+			var values='';
+				document.getElementById('alert2').innerHTML='';
+				for(var j=0;j<DECK.length;j++)
+				{
+					if(DECK[j].indexOf(valg) != -1)
+					{
+						//alert(DECK[j]);
+						cardcolor=(isRed(DECK[j]))?"darkred":"black";
+						nat=(isNatural(DECK[j],j))?"<i class='nat'>*</i>":"&nbsp;";
+						values+='<br><b style="color:'+cardcolor+'">'+DECK[j]+' = '+(j+1)+'</b>'+nat;
+					}
+					//else{ alert('NOT'+DECK[j]+' NOT'+valg+'.');}
+				}
+			document.getElementById('alert2').innerHTML+=values;
+			document.getElementById('alert2').innerHTML+=TAP_OR_CLICK;
+		}
 		function isNatural(card,pos)
 		{
 				// make sure the following gets called prior to function call pos=getPos(pos); or add one to the index for the pos
@@ -593,7 +644,7 @@
 				display:none;
 				z-index:100;
 			}
-			span#alert{
+			span#alert,span#alert2{
 				z-index:200;
 				position:absolute;
 				top:0px;
@@ -641,6 +692,11 @@
 		<input type="button" value="Bottom Card" class="mainmenu" onClick="javascript:showBottomCard();">
 		<!-- Full/Complete Cut Button -->
 		<input type="button" value="Full Cut" class="mainmenu" onClick="javascript:preCutDeck();">
+		<!-- Guess 4 of a kind -->
+		<input type="button" value="4 of a kind" class="mainmenu" onClick="javascript:guessGroup('Four of a Kind');">
+		<!-- Guess Spades -->
+		<input type="button" value="Suit" class="mainmenu" onClick="javascript:guessGroup('Suit');">
+		
 		<!-- Flip/Face Deck -->
 		<script language="JavaScript" type="text/javascript">
 		document.write("<input type='button' id='STATEBUTTON' value='Face Deck' class='mainmenu' onClick='javascript:flipDeck();'>");
@@ -677,5 +733,6 @@
 	<br><br>
 	<tt class="note">* = Natural</tt>
 	<span id="alert" onClick="javascript:this.style.visibility='hidden';"></span>
+	<span id="alert2" onClick="javascript:this.style.visibility='hidden';"></span>
 	</body>
 </html>

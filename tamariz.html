@@ -1,0 +1,741 @@
+ <!DOCTYPE html>
+<html>
+	<head>
+		<title>Deck Memory Test</title>
+		<meta charset="utf-8" />
+		<script language="JavaScript" type="text/javascript">
+		<!--
+		/*
+		Mnemonicosis JavaScript, by Richard Hucko (DEC 2019)
+		
+		Created with ideas from Curtis Kam
+		
+		Magic Principles from:
+		
+			Aronson Stack: Simon Aronson
+			Mnemonicosis: Juan Tamariz	
+		*/
+		////////////////////////////////////////////////////////////////
+		// Code modified from previous Deck Memory Test JavaScript
+		// change notes . . .
+		// - Added Cut off portions for second card
+		// - Added the ability to calculate distance
+		// - Renamed and reorganized previous code
+		// - Added preliminary checks for Naturals (based on Aronson Stack) and top/2nd, bottom/2nd
+		// - Added looking up card positions from bottom
+		// - Adjusted functions to facilitate flipping (adjust current position of Named Card (resets/hides cut card)
+		// - Added Bottom to Top Full Cut Options
+		// - Fixed spread to Always Show as if in Face-up condition
+		// - Added Psychological Force Option
+		// - Previously Cut-Off didn't adjust for Face-up condition (Fixed!)
+		// - Hide certain buttons as options and displays if others are selected (mimics state of real world conditions better)
+		// - Added UTF-8 Misc characters for Suit characters using html entities
+		// - Added Spectator's Names and Spelling of Cards for better posibilities and to make more realistic.
+		// - Added Four of a kind and suit options
+		////////////////////////////////////////////////////////////////
+		var DECK="4&clubs; 2&hearts; 7&diams; 3&clubs; 4&hearts; 6&diams; A&spades; 5&hearts; 9&spades; 2&spades; Q&hearts; 3&diams; Q&clubs; 8&hearts; 6&spades; 5&spades; 9&hearts; K&clubs; 2&diams; J&hearts; 3&spades; 8&spades; 6&hearts; 10&clubs; 5&diams; K&diams; 2&clubs; 3&hearts; 8&diams; 5&clubs; K&spades; J&diams; 8&clubs; 10&spades; K&hearts; J&clubs; 7&spades; 10&hearts; A&diams; 4&spades; 7&hearts; 4&diams; A&clubs; 9&clubs; J&spades; Q&diams; 7&clubs; Q&spades; 10&diams; 6&clubs; A&hearts; 9&diams;"; 
+		//ARONSON: "J&spades; K&clubs; 5&clubs; 2&hearts; 9&spades; A&spades; 3&hearts; 6&clubs; 8&diams; A&clubs; 10&spades; 5&hearts; 2&diams; K&diams; 7&diams; 8&clubs; 3&spades; A&diams; 7&spades; 5&spades; Q&diams; A&hearts; 8&spades; 3&diams; 7&hearts; Q&hearts; 5&diams; 7&clubs; 4&hearts; K&hearts; 4&diams; 10&diams; J&clubs; J&hearts; 10&clubs; J&diams; 4&spades; 10&hearts; 6&hearts; 3&clubs; 2&spades; 9&hearts; K&spades; 6&spades; 4&clubs; 8&hearts; 9&clubs; Q&spades; 6&diams; Q&clubs; 2&clubs; 9&diams;";
+		//MNEMONICA: "4C 2H 7D 3C 4H 6D AS 5H 9S 2S QH 3D QC 8H 6S 5S 9H KC 2D JH 3S 8S 6H 10C 5D KD 2C 3H 8D 5C KS JD 8C 10S KH JC 7S 10H AD 4S 7H 4D AC 9C JS QD 7C QS 10D 6C AH 9D"; 
+		//TEST STACK: "AS 2S 3S 4S 5S 6S 7S 8S 9S 10S JS QS KS AH 2H 3H 4H 5H 6H 7H 8H 9H 10H JH QH KH AC 2C 3C 4C 5C 6C 7C 8C 9C 10C JC QC KC AD 2D 3D 4D 5D 6D 7D 8D 9D 10D JD QD KD";
+		//DECK=DECK.toUpperCase();
+		DECK=DECK.split(" ");
+		var FIRST=DECK[0];
+		var LAST=DECK[DECK.length-1];
+		var CARD=POS=CARD2=POS2=DISTANCE="";
+		var NAT="&nbsp;"; // toggles state for marking Natural (controlled by isNatural function)
+		var TAP_OR_CLICK="<br><br><tt style='cursor:pointer;font-size:45px;color:gray;'>[ Tap or Click Screen to Close ]</tt>";
+		var STATE="DOWN"; //toggles state Faceup (UP) / Face down (DOWN)
+		
+		function getPos(pos,card)
+		{
+			for(var i=0;i<DECK.length;i++)
+			{
+				if(DECK[i] == card)
+				{
+					pos=(i+1);
+					break;
+				}
+			}
+			return pos;
+		}
+		
+		var showPos=function()
+		{ 
+			//alert(POS);
+			var em=document.getElementsByTagName('em')[0].innerHTML;
+
+			if(em.indexOf(" = ") == -1)
+			{
+				document.getElementsByTagName('em')[0].innerHTML+=" = "+POS;
+				document.getElementById('posbottom').innerHTML="(^ From Bottom = "+(DECK.length-POS+1)+")";
+				document.getElementById('posbottom').style.display='block';
+			}
+		}
+		function getCard(pos)
+		{
+			return DECK[pos-1];
+		}
+		var showCard=function()
+		{
+			//alert(DECK[POS-1]);
+			var em=document.getElementsByTagName('em')[1].innerHTML;
+			
+			if(em.indexOf(" = ") == -1)
+			{
+				document.getElementsByTagName('em')[1].innerHTML+=" = "+(getCard(POS));
+				document.getElementById('posbottom2').innerHTML="(^ Card From Bottom = "+(DECK[DECK.length-POS])+")";
+				document.getElementById('posbottom2').style.display='block';
+			}
+			document.getElementsByTagName('em')[1].style.color=(isRed(getCard(POS)))?"darkred":"black";
+		}
+		function setVolunteer()
+		{
+			var spectators=["Mary","Patricia","Jennifer","Elizabeth","Linda","Barbara","Susan","Jessica","Margaret","Sarah","Karen","Nancy","Betty","Lisa","Dorothy","Sandra","Ashley","Kimberly","Donna","Carol","Michelle","Emily","Amanda","Helen","Melissa","Deborah","Stephanie","Laura","Rebecca","Sharon","Cynthia","Kathleen","Amy","Shirley","Anna","Angela","Ruth","Brenda","Pamela","Nicole","Katherine","Virginia","Catherine","Christine","Samantha","Debra","Janet","Rachel","Carolyn","Emma","Maria","Heather","Diane","Julie","Joyce","Evelyn","Frances","Joan","Christina","Kelly","Victoria","Lauren","Martha","Judith","Cheryl","Megan","Andrea","Ann","Alice","Jean","Doris","Jacqueline","Kathryn","Hannah","Olivia","Gloria","Marie","Teresa","Sara","Janice","Julia","Grace","Judy","Theresa","Rose","Beverly","Denise","Marilyn","Amber","Madison","Danielle","Brittany","Diana","Abigail","Jane","Natalie","Lori","Tiffany","Alexis","Kayla","James","John","Robert","Michael","William","David","Richard","Joseph","Thomas","Charles","Christopher","Daniel","Matthew","Anthony","Donald","Mark","Paul","Steven","Andrew","Kenneth","George","Joshua","Kevin","Brian","Edward","Ronald","Timothy","Jason","Jeffrey","Ryan","Gary","Jacob","Nicholas","Eric","Stephen","Jonathan","Larry","Justin","Scott","Frank","Brandon","Raymond","Gregory","Benjamin","Samuel","Patrick","Alexander","Jack","Dennis","Jerry","Tyler","Aaron","Henry","Douglas","Jose","Peter","Adam","Zachary","Nathan","Walter","Harold","Kyle","Carl","Arthur","Gerald","Roger","Keith","Jeremy","Terry","Lawrence","Sean","Christian","Albert","Joe","Ethan","Austin","Jesse","Willie","Billy","Bryan","Bruce","Jordan","Ralph","Roy","Noah","Dylan","Eugene","Wayne","Alan","Juan","Louis","Russell","Gabriel","Randy","Philip","Harry","Vincent","Bobby","Johnny","Logan"];
+
+			var randSpec=getRand(0,spectators.length-1);
+
+			return spectators[randSpec];
+		}
+		function getFullName(card) // call with CARD
+		{
+			var value=card.substring(0,1)
+			var fullname=""
+			switch(value)
+			{
+				case 'A':
+					fullname="Ace ";
+					break;
+				case '2':
+					fullname="Two ";
+					break;
+				case '3':
+					fullname="Three ";
+					break;
+				case '4':
+					fullname="Four ";
+					break;
+				case '5':
+					fullname="Five ";
+					break;
+				case '6':
+					fullname="Six ";
+					break;
+				case '7':
+					fullname="Seven ";
+					break;
+				case '8':
+					fullname="Eight ";
+					break;
+				case '9':
+					fullname="Nine ";
+					break;
+				case '1': // only using 1st char for check. 1 uniquely represents 10
+					fullname="Ten ";
+					break;
+				case 'J':
+					fullname="Jack ";
+					break;
+				case 'Q':
+					fullname="Queen ";
+					break;
+				case 'K':
+					fullname="King ";
+					break;
+				default:
+					fullname="Joker";
+			}
+			if(fullname.indexOf("Joker") != -1) return fullname;
+			fullname+="of ";
+			if(card.indexOf("spade") != -1)
+			{	fullname+="Spades";	}
+			else if(card.indexOf("heart") != -1)
+			{	fullname+="Hearts";	}
+			else if(card.indexOf("club") != -1)
+			{	fullname+="Clubs";	}
+			else if(card.indexOf("diam") != -1)
+			{	fullname+="Diamonds";	}
+			return fullname;
+		}
+		////////////////////////////////////////////////////////////////
+		var hideDivs=function()
+		{
+			var divs=document.getElementsByTagName('div');
+			for(var i=0;i<divs.length;i++)
+			{
+				divs[i].style.display='none';
+			}
+		}
+		var showDiv=function(divID)
+		{
+			// first hide all div tags
+			hideDivs();
+			// finally, display div requested
+			document.getElementById(divID).style.display='block';
+		}
+		var flipDeck=function()
+		{
+			// emulate flipping deck by reversing order
+			
+			STATE=(STATE=="UP")?"DOWN":"UP";
+			document.getElementById('STATEBUTTON').value=(STATE=="DOWN")?"Face Deck":"Flip Face-Down";
+			DECK.reverse(); // Reverse Order of Deck (Flip Deck)
+			document.getElementById('STATE').innerHTML=STATE;
+			
+			if(document.getElementById('card').style.display=='block')
+				displayCard(false);
+			if(document.getElementById('number').style.display=='block')
+				setPos(false);
+			document.getElementById('cutcard').style.display='none';
+		}
+		var showDeck=function(min,max)
+		{
+			 var spreadcount=1;
+			 document.getElementById('alert').style.color="darkgreen";
+			 document.getElementById('alert').innerHTML="<br><br><br>Current Spread: <br><br>|";
+			 
+			 if(STATE==="UP") // if deck currently face-up (display in reverse)
+				 for(var i=max-1;i>=min;i--)
+				 {
+					color=(isRed(DECK[i]))?"darkred":"black";
+					document.getElementById('alert').style.color="gray";
+					document.getElementById('alert').innerHTML+="<i style='color:"+color+";font-size:80px;'>"+DECK[i]+"</i>";
+					if((spreadcount==13) || (spreadcount==26) || (spreadcount==39))
+						document.getElementById('alert').innerHTML+="|&nbsp;<tt style='font-size:30px;color:black;'>--&gt;</tt><br><tt style='font-size:30px;color:black;'>...</tt>";
+					document.getElementById('alert').innerHTML+="|"
+					spreadcount++;
+				 }
+
+			 else // deck currently face-down (display forward)
+			 { 
+				 for(var i=min;i<max;i++)
+				 {
+					color=(isRed(DECK[i]))?"darkred":"black";
+					document.getElementById('alert').style.color="gray";
+					document.getElementById('alert').innerHTML+="<i style='color:"+color+";font-size:80px;'>"+DECK[i]+"</i>";
+					if((spreadcount==13) || (spreadcount==26) || (spreadcount==39))
+						document.getElementById('alert').innerHTML+="|&nbsp;<tt style='font-size:30px;color:black;'>--&gt;</tt><br><tt style='font-size:30px;color:black;'>...</tt>";
+					document.getElementById('alert').innerHTML+="|"
+					spreadcount++;
+				 }
+			 }
+			 document.getElementById('alert').innerHTML+=TAP_OR_CLICK;
+			 document.getElementById('alert').style.visibility="visible";
+
+		}
+		var preCutOff=function()
+		{
+				if(STATE==="UP")
+					DECK.reverse();
+				var cutsize=[
+					['0 ~ 1/4',1,13],
+					['~1/4',10,16],
+					['~1/3',13,21],
+					['~1/2',21,30],
+					['~2/3',30,38],
+					['~3/4',36,43],
+					['3/4 ~ 1',39,52],
+					['RANDOM',1,52]];
+				var cutsizerows=8;
+				var cutsizecols=3;
+				document.getElementById('alert').innerHTML="<br><br><b style='font-size:100px;'>Cut Off: </b><br><br>";
+				for(var i=0;i<cutsizerows;i++)
+				{
+					document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='"+cutsize[i][0]+"' class='cutsize' onClick='javascript:cutOff("+cutsize[i][1]+","+cutsize[i][2]+");'>";
+				}
+				document.getElementById('alert').innerHTML+=TAP_OR_CLICK;
+				document.getElementById('alert').style.visibility="visible";
+				document.getElementById('guess').style.display='none'; // Hide guess
+				
+				if(STATE==="UP")
+					DECK.reverse();
+		}
+		var cutOff=function(min1,max2)
+		{
+			// Simulate cutting off portion of deck (second card chosen - update Globals: CARD2 and POS2
+			POS2=(getRand(min1,max2)-1);
+			CARD2=DECK[POS2];
+			POS2=getPos(POS2,CARD2);
+			//alert("POS: "+POS2-1);
+			NAT=(isNatural(CARD2,POS2))?"<i class='nat'>*</i>":"&nbsp;";				
+			showThisCard(CARD2,"Card Cut: ");
+			document.getElementById('cutcard').style.color=(isRed(CARD2))?"darkred":"black";
+			document.getElementById('cutcard').innerHTML="<br>Cut Card: <b>"+CARD2+"</b>"+NAT+"&nbsp;";
+			if(document.getElementById('cutcard').innerHTML.indexOf(" = ") == -1)
+				document.getElementById('cutcard').innerHTML+="<input type='button' value='Show Position' onClick='javascript:showPos2();'><br>";
+			document.getElementById('cutcard').style.display='block';
+			if(POS!="")
+			{
+				DISTANCE=(ge(POS,POS2))?POS-POS2:POS2-POS;
+				DISTANCE--; // Subtract 1 for cards between
+				//alert("POS: "+POS+", POS2: "+POS2+"Distance: "+DISTANCE);
+				document.getElementById('distance').innerHTML="<br>";
+				if(DISTANCE==-1||CARD==CARD2)
+					document.getElementById('distance').innerHTML="<br>Damn, you're good! You cut to your own card!<br>";
+				else
+				{
+					showSpreadButton();
+					showSpecGuessButton(); // Moving call to appear sooner - after initial named card
+					showDistanceButton();
+				}
+			}
+		}
+		var showSpreadButton=function()
+		{
+			var smaller=larger=0;
+			if(ge(POS,POS2)){larger=POS;smaller=POS2;}else{larger=POS2;smaller=POS;}
+			document.getElementById('distance').style.display='block';
+			document.getElementById('distance').innerHTML+="<input type='button' value='Show Spread!' onClick='javascript:showDeck("+smaller+","+(larger-1)+");' style='font-size:100px;cursor:pointer;' >";
+		}
+		var showSpecGuessButton=function()
+		{
+			document.getElementById('predistance').style.display='block';
+			document.getElementById('predistance').innerHTML="&nbsp;<input type='button' value='Psych-Force Attempt!' onClick='javascript:showSpecGuess();' style='font-size:100px;cursor:pointer;' >";
+		}	
+		var showDistanceButton=function()
+		{
+			document.getElementById('distance').style.display='block';
+			document.getElementById('distance').innerHTML+="&nbsp;<input type='button' id='showdist' value='Show Distance!' onClick='javascript:showDistance();hideShowDist();' style='font-size:100px;cursor:pointer;' >";
+		}
+		var showDistance=function()
+		{
+			if(DISTANCE==0)
+				document.getElementById('distance').innerHTML="<br>Your card is right next to the one you just cut!<br>";
+			else
+			{
+				document.getElementById('guess').innerHTML="<br>Distance: a <b style='font-size:200px;'>"+DISTANCE+"</b> card seperation.<br>";
+				document.getElementById('guess').style.display='block';
+			}
+		}
+		var showSpecGuess=function()
+		{
+			document.getElementById('guess').style.display='block';
+			
+			
+			var pos2=guess='';
+			var tolerance=4;
+			var pos=POS;
+			
+			
+				
+			// if cut off card not chosen, set pos2
+			if(POS2==null) 
+				pos2=0;
+			else
+				pos2=POS2;
+			
+			
+			/*
+			// handle cases where DISTANCE is less than tolerance
+			if(DISTANCE!=null)
+				if(DISTANCE<tolerance)
+					tolerance=DISTANCE;
+			*/
+			
+			/*if(DISTANCE=='')
+				DISTANCE=getRand(1,tolerance);
+			if(DISTANCE.indexOf("-") != -1)
+				DISTANCE=DISTANCE.substring(1,2);*/
+			/*
+			// Psych Force guaranted if next to or on card!
+			if(DISTANCE<1)
+				guess=pos-1;
+			else
+			{
+				var operator=(ge(pos,pos2))?"-":"+";
+				guess=(operator==="-")?getRand(pos-tolerance,pos):getRand(pos,pos+tolerance);
+			}
+			*/
+			
+			//var color=(isRed(DECK[guess]))?"darkred":"black";
+			//document.getElementById('guess').innerHTML="<br>You deal cards and the spectator stops you on the <b style='color:"+color+"'>"+DECK[guess]+"</b>";
+			
+			var operator=(ge(pos,pos2))?"-":"+";
+			var tolerance=(operator==="-")?pos-pos2:pos2-pos;
+			if(tolerance>1)
+				guess=getRand(1,tolerance+1);
+			else
+				guess=tolerance;
+			
+			document.getElementById('guess').innerHTML="";
+			/*if(DECK[guess]===CARD)
+				document.getElementById('guess').innerHTML+=" - Yay! Spot on!";
+			else*/
+				document.getElementById('guess').innerHTML+="<br>Spectator chooses the number: <b>"+guess+"</b>...";
+				//document.getElementById('guess').innerHTML+="&nbsp;<input type='button' id='offby' value='Number Off by...' onClick='javascript:showGuessOffBy("+guess+");hideOffBy();' style='font-size:40px;cursor:pointer;' >";
+			document.getElementById('guess').innerHTML+="<br>";
+		}
+		var showGuessOffBy=function(guess)
+		{
+			var diff=(ge((POS-1),guess))?((POS-1)-guess):(guess-(POS-1));
+			if(diff != 0)
+				document.getElementById('guess').innerHTML+="Only Off by <b>"+diff+" cards!</b><br>";
+			else
+				document.getElementById('guess').innerHTML+="<b>Yay! Nice Job!</b><br>";
+		}
+		var hideOffBy=function()
+		{
+			document.getElementById('offby').style.display='none';
+		}
+		var hideShowDist=function()
+		{
+			document.getElementById('showdist').style.display='none';
+		}
+		var showPos2=function(){document.getElementById('cutcard').innerHTML="<br>Cut Card: <b>"+CARD2+NAT+" = "+POS2+"<br><tt class='bottomcount' style='font-size:45px;'>(^ From Bottom = "+(DECK.length-POS2+1)+")</tt></b><br>";}
+		var preCutDeck=function()
+		{
+			document.getElementById('alert').innerHTML="<br><br><b style='color:darkgreen;'>Cut Top to Bottom:</b><br><br>";
+			for(var i=1;i<DECK.length;i++)
+				document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:cutDeck("+i+");hideDivs();'>";
+
+			document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
+			
+			document.getElementById('alert').innerHTML+="<br><br><b style='color:darkgreen;'>Cut Bottom to Top:</b><br><br>";
+			for(var i=1;i<DECK.length;i++)
+				document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:DECK.reverse();cutDeck("+i+");DECK.reverse();hideDivs();'>";
+
+			document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
+			document.getElementById('alert').innerHTML+=TAP_OR_CLICK;
+			document.getElementById('alert').style.visibility="visible";
+		}
+		var cutDeck=function(mid) // A Full/Complete Cut (cut and carry)
+		{
+			document.getElementById('cutcard').style.display='none'; // Hide Cut Card Info
+			document.getElementById('distance').style.display='none'; // Hide Distance
+			document.getElementById('guess').style.display='none'; // Hide guess
+			
+			lhalf=[];rhalf=[];
+			for(var i=0;i<mid;i++)
+			{
+				lhalf.push(DECK[i])
+			}
+			for(var x=mid;x<DECK.length;x++)
+			{
+				rhalf.push(DECK[x])
+			}
+			DECK=[];				  // Reset Deck for cut
+			DECK=rhalf.concat(lhalf); // DECK = rhalf + lhalf  (the cut)
+			//alert("New Order After Cut: "+DECK);
+			//alert("The deck has been cut and completed. You may want to glimpse the bottom card.");
+			 document.getElementById('alert').style.color="darkgreen";
+			 document.getElementById('alert').innerHTML="<br><br><br><br>The Deck has been cut!<br><br>(You may want to glimpse the bottom card)"+TAP_OR_CLICK;
+			 document.getElementById('alert').style.visibility="visible";
+		}
+		var showBottomCard=function()
+		{
+			//alert("Bottom Card: "+DECK[DECK.length-1]);
+			showThisCard(DECK[DECK.length-1],"Bottom Card: ");
+		}
+		var showTopCard=function()
+		{
+			//alert("Top Card: "+DECK[0]);
+			 showThisCard(DECK[0],"Top Card: ");
+		}
+		var showThisCard=function(card,msg)
+		{
+			 document.getElementById('alert').style.color=(isRed(card))?"darkred":"black";
+			 document.getElementById('alert').innerHTML="<br><br><br><br>"+msg+card+TAP_OR_CLICK;
+			 document.getElementById('alert').style.visibility="visible";
+		}
+		function isRed(card)
+		{
+			if((card.indexOf("spade") == -1) && (card.indexOf("club") == -1))
+				return true;
+			else
+				return false;
+		}
+		////////////////////////////////////////////////////////////////
+		function ge(x,y) //Greater than or Equal to...
+		{
+			return (x >= y)?true:false;
+		}
+		function getRand(min,max)
+		{
+			return Math.floor((Math.random())*(max-min))+min;
+		}
+		function setCard() // Pick/generate Card Randomly
+		{
+			var value=getRand(1,13);
+			var suit=getRand(1,5);
+
+			switch(value)
+			{
+				case 1:
+					value='A';
+					break;
+				case 11:
+					value='J';
+					break;
+				case 12:
+					value='Q';
+					break;
+				case 13:
+					value='K';
+					break;
+				default:
+					// pass, value stays the same
+			}
+			switch(suit)
+			{
+				case 1:
+					suit='&clubs;';
+					break;
+				case 2:
+					suit='&hearts;';
+					break;
+				case 3:
+					suit='&spades;';
+					break;
+				case 4:
+					suit='&diams;';
+					break;
+				default:
+					suit='&diams;';
+			}
+			document.getElementsByTagName('em')[0].style.color=(isRed(suit))?"darkred":"black";
+			return value+suit;
+		}
+		var displayCard=function(rand)
+		{
+			showHide();
+			POS2=CARD2=""; // reset POS2 and CARD2 (covers case of previous cut card);
+			var em=document.getElementsByTagName('em')[0];
+			if(rand==true)
+				CARD=setCard(); // Pick Card
+			POS=getPos(POS,CARD);
+			NAT=(isNatural(CARD,POS))?"<i class='nat'>*</i>":"&nbsp;";
+			em.innerHTML=CARD+NAT;	
+		}
+		var showVolunteer=function()
+		{
+			var fullname=getFullName(CARD);
+			var spectator=setVolunteer();
+			document.getElementById('showspec').innerHTML=spectator+" names the "+fullname;
+		}
+		function setPos(rand)
+		{
+			showHide();
+			POS2=CARD2=""; //reset POS2 and CARD2 (covers case of previous cut card)
+			if(rand==true)
+				POS=getRand(1,52);
+			var em=document.getElementsByTagName('em')[1];
+			document.getElementsByTagName('em')[1].style.color="darkgreen";
+			NAT=(isNatural(getCard(POS),POS))?"<i class='nat'>*</i>":"&nbsp;";	
+			em.innerHTML=POS+NAT;
+		}
+		var showHide=function()
+		{
+			document.getElementById('cutcard').style.display='none'; // Hide Cut Card Info
+			document.getElementById('distance').style.display='none'; // Hide Distance
+			document.getElementById('showspec').style.display='block'; // Display <Spectator> names the . . .
+			document.getElementById('showcard').style.display='block'; // Display Show Card Button
+			document.getElementById('showpos').style.display='block'; // Display Show Position Button
+			document.getElementById('posbottom').style.display='none';
+			document.getElementById('posbottom2').style.display='none';
+			document.getElementById('guess').style.display='none'; // Hide guess
+		}
+				function guessGroup(gtype)
+		{
+			
+			document.getElementById('alert').innerHTML='<h1>Choose a '+gtype+':</h1>';
+			document.getElementById('alert').style.color='black';
+			document.getElementById('alert').style.visibility='visible';			
+			
+			// Four of a Kind or Suit..? set max
+			var maxg=(gtype.indexOf("Four") == -1)?13:4;
+			
+			//alert(maxg);
+			
+			if(maxg==4)
+			{
+				for(var x=1;x<=13;x++)
+				{
+					y=(x==1)?'A':(x==11)?'J':(x==12)?'Q':(x==13)?'K':x;
+					document.getElementById('alert').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
+				}
+			}
+			else
+			{
+				for(var x=1;x<=4;x++)
+				{
+					y=(x==1)?'clubs':(x==2)?'hearts':(x==3)?'spades':(x==4)?'diams':x;
+					document.getElementById('alert').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
+				
+				}
+			}
+		}
+		function valG(valg)
+		{
+			valg=valg.trim();
+			//alert(valg);
+			var values='';
+				document.getElementById('alert2').innerHTML='';
+				for(var j=0;j<DECK.length;j++)
+				{
+					if(DECK[j].indexOf(valg) != -1)
+					{
+						//alert(DECK[j]);
+						cardcolor=(isRed(DECK[j]))?"darkred":"black";
+						nat=(isNatural(DECK[j],j))?"<i class='nat'>*</i>":"&nbsp;";
+						values+='<br><b style="color:'+cardcolor+'">'+DECK[j]+' = '+(j+1)+'</b>'+nat;
+					}
+					//else{ alert('NOT'+DECK[j]+' NOT'+valg+'.');}
+				}
+			document.getElementById('alert2').innerHTML+=values;
+			document.getElementById('alert2').innerHTML+=TAP_OR_CLICK;
+		}
+		function isNatural(card,pos)
+		{
+				// make sure the following gets called prior to function call pos=getPos(pos); or add one to the index for the pos
+				
+				if((card==DECK[0])||(card==DECK[1])||(card==DECK[DECK.length-1])||(card==DECK[DECK.length-2]))
+					return true;
+				if((pos==1)||(pos==2)||(pos==DECK.length)||(pos==DECK.length-1))
+					return true;
+				
+				if(DECK[0]==FIRST||DECK[0]==LAST)
+					if((card=='2&hearts;')||(card=='6&diams;')||(card=='9&spades;')||(card=='Q&clubs;')||(card=='8&hearts;')||(card=='9&clubs;'))
+						return true;
+				/* if Aronson Stack
+				if(DECK[0]==FIRST) // face-down in starting pos
+					if(((pos<=15)&&(pos>=10)) || ((pos<=41)&&(pos>=38)))
+						return true;
+				if(DECK[0]==LAST) // face-up in starting pos
+					if(((pos<=15)&&(pos>=12)) || ((pos<=43)&&(pos>=38)))
+						return true;
+				*/
+						
+				return false;
+		}
+		////////////////////////////////////////////////////////////////
+		
+		-->
+		</script>
+		<style type="text/css">
+			body{
+				text-align:center;
+				font-size:100px;
+				z-index:0;
+			}
+			input{
+					font-size:30px;
+					background-color:white;
+					color:black;
+					z-index:100;
+			}
+			input.cutsize{
+					font-size:80px;
+			}
+			input.mainmenu{
+					font-size:50px;
+			}
+			input.new{
+					font-size:70px;
+					visibility:visible;
+			}
+			input:hover{
+					cursor:pointer;
+					background-color:black;
+					color:white;
+			}
+			div{
+				display:none;
+				position:relative;
+				z-index:100;
+				text-align:center;
+			}
+			span#predistance,span#distance,span#guess{
+				font-size:80px;
+				display:none;
+				z-index:100;
+			}
+			span#alert,span#alert2{
+				z-index:200;
+				position:absolute;
+				top:0px;
+				left:0px;
+				background-color:white;
+				color:darkgreen;
+				width:100%;
+				height:200%;
+				visibility:hidden;
+				font-weight:bold;
+				cursor:pointer;
+			}
+			em{
+				font-size:225px;
+				text-decoration:none;
+				font-weight:bold;
+				z-index:100;
+			}
+			.bottomcount{
+				font-size:70px;
+				color:gray;
+				font-weight:bold;
+			}
+			i.nat{
+				color:gray;
+				text-decoration:none;
+			}
+			tt.note{
+				font-size:35px;
+				color:gray;
+			}
+			[id$=STATE]{
+				font-size:50px;
+				color:gray;
+			}
+		</style>
+	</head>
+	<body>
+		<b id='pre-STATE'>DECK: FACE-</b><b id="STATE"><script language="JavaScript" type="text/javascript">document.write(STATE);</script></b>
+		<input type="button" value="Spread" class="mainmenu" onClick="javascript:showDeck(0,DECK.length);">
+		<!-- Cut Off Portion Buttons-->
+		<input type="button" value="Cut Off" class="mainmenu" onClick="javascript:preCutOff();">
+		<!-- Show Top / Bottom Card Buttons -->
+		<input type="button" value="Top Card" class="mainmenu" onClick="javascript:showTopCard();">
+		<input type="button" value="Bottom Card" class="mainmenu" onClick="javascript:showBottomCard();">
+		<!-- Full/Complete Cut Button -->
+		<input type="button" value="Full Cut" class="mainmenu" onClick="javascript:preCutDeck();">
+		<!-- Guess 4 of a kind -->
+		<input type="button" value="4 of a kind" class="mainmenu" onClick="javascript:guessGroup('Four of a Kind');">
+		<!-- Guess Spades -->
+		<input type="button" value="Suit" class="mainmenu" onClick="javascript:guessGroup('Suit');">
+		<!-- Flip/Face Deck -->
+		<script language="JavaScript" type="text/javascript">
+		document.write("<input type='button' id='STATEBUTTON' value='Face Deck' class='mainmenu' onClick='javascript:flipDeck();'>");
+		</script>
+		<hr>
+		<!-- New Card / Number Buttons -->
+		<input type="button" value="New Card" class="new" onClick="javascript:displayCard(true);showDiv('card');showSpecGuessButton();showVolunteer();">
+		<input type="button" value="New Number" class="new" onClick="javascript:setPos(true);showDiv('number');showSpecGuessButton();">
+		<span id="cutcard"></span>
+		<div id='card'>
+			<center>
+				<tt id="showspec" style="font-weight:bold;color:gray;"></tt>
+				<em></em>
+				<br>
+				<tt id='posbottom' class='bottomcount'></tt>
+				
+				<input type="button" value="Show Position" class="new" id="showpos" onClick="javascript:showPos();this.style.display='none';">
+			</center>
+		</div>
+		<div id='number'>
+			<center>
+				<br>
+				<em></em>
+				<br>
+				<tt id='posbottom2' class='bottomcount'></tt>
+				
+				<input type="button" value="Show Card" class="new" id="showcard" onClick="javascript:showCard();this.style.display='none';">
+			</center>
+	</div>
+	<span id="guess"></span>
+	<br>
+		<span id="predistance"></span>
+	<span id="distance"></span>
+	<br><br>
+	<tt class="note">* = Natural</tt>
+	<span id="alert" onClick="javascript:this.style.visibility='hidden';"></span>
+	<span id="alert2" onClick="javascript:this.style.visibility='hidden';"></span>
+	</body>
+</html>

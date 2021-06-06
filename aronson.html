@@ -547,6 +547,11 @@
 			var x=pos-named; //Number of cards to "cut"
 			var pad=""
 			var math_string=pos+"-"+named+"="+x+"<br>";
+			var nat=false;
+			
+			if(x==0) // Natural
+			    nat=true;	
+			    
 			if(x<0)
 			{
 				math_string+="52"+x+"=";
@@ -559,6 +564,12 @@
 			document.getElementById("posbottom3").innerHTML=math_string;
 			document.getElementById("posbottom4").innerHTML="Cut the <b id='cutcard1' style='font-size:100px;'>"+DECK[x-1]+"</b> #"+x+" to the bottom";
 			document.getElementById("cutcard1").style.color=(isRed(DECK[x-1]))?"darkred":"black";
+			
+			if(nat)
+			{
+			    document.getElementsByTagName('em')[3].innerHTML+="<i style='color:gray;'>*</i>";
+			    document.getElementById("posbottom4").innerHTML="<b>WINNER!</b>";
+			}
 		}
 		function guessGroup(gtype)
 		{

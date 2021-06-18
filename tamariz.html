@@ -6,13 +6,13 @@
 		<script language="JavaScript" type="text/javascript">
 		<!--
 		/*
-		Mnemonicosis JavaScript, by Richard Hucko (DEC 2019)
+		Mnemonicosis JavaScript, by Richard Hucko (JUN 2021)
 		
 		Created with ideas from Curtis Kam
 		
 		Magic Principles from:
 		
-			Aronson Stack: Simon Aronson
+			Mnemonica: Juan Tamariz
 			Mnemonicosis: Juan Tamariz	
 		*/
 		////////////////////////////////////////////////////////////////
@@ -32,9 +32,9 @@
 		// - Added UTF-8 Misc characters for Suit characters using html entities
 		// - Added Spectator's Names and Spelling of Cards for better posibilities and to make more realistic.
 		// - Added Four of a kind and suit options
+		// - Added ACAAN
 		////////////////////////////////////////////////////////////////
 		var DECK="4&clubs; 2&hearts; 7&diams; 3&clubs; 4&hearts; 6&diams; A&spades; 5&hearts; 9&spades; 2&spades; Q&hearts; 3&diams; Q&clubs; 8&hearts; 6&spades; 5&spades; 9&hearts; K&clubs; 2&diams; J&hearts; 3&spades; 8&spades; 6&hearts; 10&clubs; 5&diams; K&diams; 2&clubs; 3&hearts; 8&diams; 5&clubs; K&spades; J&diams; 8&clubs; 10&spades; K&hearts; J&clubs; 7&spades; 10&hearts; A&diams; 4&spades; 7&hearts; 4&diams; A&clubs; 9&clubs; J&spades; Q&diams; 7&clubs; Q&spades; 10&diams; 6&clubs; A&hearts; 9&diams;"; 
-		//ARONSON: "J&spades; K&clubs; 5&clubs; 2&hearts; 9&spades; A&spades; 3&hearts; 6&clubs; 8&diams; A&clubs; 10&spades; 5&hearts; 2&diams; K&diams; 7&diams; 8&clubs; 3&spades; A&diams; 7&spades; 5&spades; Q&diams; A&hearts; 8&spades; 3&diams; 7&hearts; Q&hearts; 5&diams; 7&clubs; 4&hearts; K&hearts; 4&diams; 10&diams; J&clubs; J&hearts; 10&clubs; J&diams; 4&spades; 10&hearts; 6&hearts; 3&clubs; 2&spades; 9&hearts; K&spades; 6&spades; 4&clubs; 8&hearts; 9&clubs; Q&spades; 6&diams; Q&clubs; 2&clubs; 9&diams;";
 		//MNEMONICA: "4C 2H 7D 3C 4H 6D AS 5H 9S 2S QH 3D QC 8H 6S 5S 9H KC 2D JH 3S 8S 6H 10C 5D KD 2C 3H 8D 5C KS JD 8C 10S KH JC 7S 10H AD 4S 7H 4D AC 9C JS QD 7C QS 10D 6C AH 9D"; 
 		//TEST STACK: "AS 2S 3S 4S 5S 6S 7S 8S 9S 10S JS QS KS AH 2H 3H 4H 5H 6H 7H 8H 9H 10H JH QH KH AC 2C 3C 4C 5C 6C 7C 8C 9C 10C JC QC KC AD 2D 3D 4D 5D 6D 7D 8D 9D 10D JD QD KD";
 		//DECK=DECK.toUpperCase();
@@ -182,9 +182,9 @@
 			document.getElementById('STATE').innerHTML=STATE;
 			
 			if(document.getElementById('card').style.display=='block')
-				displayCard(false);
+				displayCard(false,true,0);
 			if(document.getElementById('number').style.display=='block')
-				setPos(false);
+				setPos(false,true,1);
 			document.getElementById('cutcard').style.display='none';
 		}
 		var showDeck=function(min,max)
@@ -289,7 +289,7 @@
 		var showSpecGuessButton=function()
 		{
 			document.getElementById('predistance').style.display='block';
-			document.getElementById('predistance').innerHTML="&nbsp;<input type='button' value='Psych-Force Attempt!' onClick='javascript:showSpecGuess();' style='font-size:100px;cursor:pointer;' >";
+			document.getElementById('predistance').innerHTML="&nbsp;<input type='button' id='psych' value='Psych-Force Attempt!' onClick='javascript:showSpecGuess();' style='font-size:100px;cursor:pointer;' >";
 		}	
 		var showDistanceButton=function()
 		{
@@ -380,6 +380,11 @@
 		{
 			document.getElementById('showdist').style.display='none';
 		}
+	    var hideSpecGuessButton=function()
+		{
+			document.getElementById('predistance').style.display='none';
+			document.getElementById('psych').style.display='none';
+		}
 		var showPos2=function(){document.getElementById('cutcard').innerHTML="<br>Cut Card: <b>"+CARD2+NAT+" = "+POS2+"<br><tt class='bottomcount' style='font-size:45px;'>(^ From Bottom = "+(DECK.length-POS2+1)+")</tt></b><br>";}
 		var preCutDeck=function()
 		{
@@ -452,7 +457,7 @@
 		{
 			return Math.floor((Math.random())*(max-min))+min;
 		}
-		function setCard() // Pick/generate Card Randomly
+		function setCard(elem) // Pick/generate Card Randomly
 		{
 			var value=getRand(1,13);
 			var suit=getRand(1,5);
@@ -491,18 +496,18 @@
 				default:
 					suit='&diams;';
 			}
-			document.getElementsByTagName('em')[0].style.color=(isRed(suit))?"darkred":"black";
+			document.getElementsByTagName('em')[elem].style.color=(isRed(suit))?"darkred":"black";
 			return value+suit;
 		}
-		var displayCard=function(rand)
+		var displayCard=function(rand,nat,elem)
 		{
 			showHide();
 			POS2=CARD2=""; // reset POS2 and CARD2 (covers case of previous cut card);
-			var em=document.getElementsByTagName('em')[0];
+			var em=document.getElementsByTagName('em')[elem];
 			if(rand==true)
-				CARD=setCard(); // Pick Card
+				CARD=setCard(elem); // Pick Card
 			POS=getPos(POS,CARD);
-			NAT=(isNatural(CARD,POS))?"<i class='nat'>*</i>":"&nbsp;";
+			NAT=(isNatural(CARD,POS)&&nat)?"<i class='nat'>*</i>":"&nbsp;";
 			em.innerHTML=CARD+NAT;	
 		}
 		var showVolunteer=function()
@@ -511,15 +516,15 @@
 			var spectator=setVolunteer();
 			document.getElementById('showspec').innerHTML=spectator+" names the "+fullname;
 		}
-		function setPos(rand)
+		function setPos(rand,nat,elem)
 		{
 			showHide();
 			POS2=CARD2=""; //reset POS2 and CARD2 (covers case of previous cut card)
 			if(rand==true)
 				POS=getRand(1,52);
-			var em=document.getElementsByTagName('em')[1];
-			document.getElementsByTagName('em')[1].style.color="darkgreen";
-			NAT=(isNatural(getCard(POS),POS))?"<i class='nat'>*</i>":"&nbsp;";	
+			var em=document.getElementsByTagName('em')[elem];
+			document.getElementsByTagName('em')[elem].style.color="darkgreen";
+			NAT=(isNatural(getCard(POS),POS)&&nat)?"<i class='nat'>*</i>":"&nbsp;";	
 			em.innerHTML=POS+NAT;
 		}
 		var showHide=function()
@@ -529,11 +534,42 @@
 			document.getElementById('showspec').style.display='block'; // Display <Spectator> names the . . .
 			document.getElementById('showcard').style.display='block'; // Display Show Card Button
 			document.getElementById('showpos').style.display='block'; // Display Show Position Button
+			document.getElementById('showcard1').style.display='block'; // Display ACAAN Show Card Button
+			document.getElementById('showmath').style.display='block'; // Display ACAAN Show Math Button
 			document.getElementById('posbottom').style.display='none';
 			document.getElementById('posbottom2').style.display='none';
+			document.getElementById('posbottom3').style.display='none';
+			document.getElementById('posbottom4').style.display='none';
 			document.getElementById('guess').style.display='none'; // Hide guess
 		}
-				function guessGroup(gtype)
+		function ACAAN(pos,named)
+		{
+			var x=pos-named; //Number of cards to "cut"
+			var math_string=pos+"-"+named+"="+x+"<br>";
+			    
+			if(x<0)
+			{
+				math_string+="52"+x+"=";
+			    x+=52;
+			    math_string+=x;
+			}
+
+			//alert(pos+" - "+named+", "+"Cut card number "+x+" to the bottom, "+DECK[x-1]);
+			
+			document.getElementById("posbottom3").innerHTML=math_string;
+			if(x!=0)
+			{
+			    document.getElementById("posbottom4").innerHTML="Cut the <b id='cutcard1' style='font-size:100px;'>"+DECK[x-1]+"</b> #"+x+" to the bottom";
+			    document.getElementById("cutcard1").style.color=(isRed(DECK[x-1]))?"darkred":"black";
+			}
+			//check if natural
+			if(x==0)
+			{
+			    document.getElementsByTagName('em')[3].innerHTML+="<i style='color:gray;'>*</i>";
+			    document.getElementById("posbottom4").innerHTML="<b>WINNER!</b>";
+			}
+		}
+		function guessGroup(gtype)
 		{
 			
 			document.getElementById('alert').innerHTML='<h1>Choose a '+gtype+':</h1>';
@@ -591,18 +627,15 @@
 					return true;
 				if((pos==1)||(pos==2)||(pos==DECK.length)||(pos==DECK.length-1))
 					return true;
-				
 				if(DECK[0]==FIRST||DECK[0]==LAST)
-					if((card=='2&hearts;')||(card=='6&diams;')||(card=='9&spades;')||(card=='Q&clubs;')||(card=='8&hearts;')||(card=='9&clubs;'))
+					if((card=='A&clubs;')||(card=='10&spades;')||(card=='5&hearts;')||(card=='2&diams;')||(card=='K&diams;')||(card=='7&diams;')||(card=='2&spades;')||(card=='3&clubs;')||(card=='6&hearts;')||(card=='10&hearts;'))
 						return true;
-				/* if Aronson Stack
 				if(DECK[0]==FIRST) // face-down in starting pos
 					if(((pos<=15)&&(pos>=10)) || ((pos<=41)&&(pos>=38)))
 						return true;
 				if(DECK[0]==LAST) // face-up in starting pos
 					if(((pos<=15)&&(pos>=12)) || ((pos<=43)&&(pos>=38)))
 						return true;
-				*/
 						
 				return false;
 		}
@@ -700,19 +733,23 @@
 		<input type="button" value="4 of a kind" class="mainmenu" onClick="javascript:guessGroup('Four of a Kind');">
 		<!-- Guess Spades -->
 		<input type="button" value="Suit" class="mainmenu" onClick="javascript:guessGroup('Suit');">
+		
 		<!-- Flip/Face Deck -->
 		<script language="JavaScript" type="text/javascript">
 		document.write("<input type='button' id='STATEBUTTON' value='Face Deck' class='mainmenu' onClick='javascript:flipDeck();'>");
 		</script>
 		<hr>
 		<!-- New Card / Number Buttons -->
-		<input type="button" value="New Card" class="new" onClick="javascript:displayCard(true);showDiv('card');showSpecGuessButton();showVolunteer();">
-		<input type="button" value="New Number" class="new" onClick="javascript:setPos(true);showDiv('number');showSpecGuessButton();">
+		<input type="button" value="New Card" class="new" onClick="javascript:displayCard(true,true,0);showDiv('card');showSpecGuessButton();showVolunteer();">
+		<input type="button" value="New Number" class="new" onClick="javascript:setPos(true,true,1);showDiv('number');showSpecGuessButton();">
+		<!-- ACAAN Button-->
+		<input type="button" value="ACAAN" class="new" onClick="javascript:setPos(true,false,2);NAMED=POS;displayCard(true,false,3);showDiv('accan');showSpecGuessButton();hideSpecGuessButton();ACAAN(POS,NAMED);">
+
 		<span id="cutcard"></span>
 		<div id='card'>
 			<center>
 				<tt id="showspec" style="font-weight:bold;color:gray;"></tt>
-				<em></em>
+				<em></em> <!-- 0 -->
 				<br>
 				<tt id='posbottom' class='bottomcount'></tt>
 				
@@ -722,11 +759,29 @@
 		<div id='number'>
 			<center>
 				<br>
-				<em></em>
+				<em></em> <!-- 1 -->
 				<br>
 				<tt id='posbottom2' class='bottomcount'></tt>
 				
 				<input type="button" value="Show Card" class="new" id="showcard" onClick="javascript:showCard();this.style.display='none';">
+			</center>
+	</div>
+			<div id='accan'>
+			<center>
+				<br>
+				The number
+				<em></em> <!-- 2 -->
+				is named<br>
+				The
+				<em></em> <!-- 3 -->
+				is named
+				<br>
+				<tt id='posbottom3' class='bottomcount'></tt>
+				<tt id='posbottom4' class='bottomcount'></tt>
+				
+				<input type="button" value="Show Math" class="new" id="showmath" onClick="javascript:document.getElementById('posbottom3').style.display='block';this.style.display='none';">
+				<input type="button" value="Show Card" class="new" id="showcard1" onClick="javascript:document.getElementById('posbottom4').style.display='block';this.style.display='none';">
+			    
 			</center>
 	</div>
 	<span id="guess"></span>

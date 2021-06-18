@@ -12,7 +12,7 @@
 		
 		Magic Principles from:
 		
-			Aronson Stack: Simon Aronson
+			Formula: Henning Nelms
 			Mnemonicosis: Juan Tamariz	
 		*/
 		////////////////////////////////////////////////////////////////
@@ -464,23 +464,7 @@
 			var value=getRand(1,13);
 			var suit=getRand(1,5);
 
-			switch(value)
-			{
-				case 1:
-					value='A';
-					break;
-				case 11:
-					value='J';
-					break;
-				case 12:
-					value='Q';
-					break;
-				case 13:
-					value='K';
-					break;
-				default:
-					// pass, value stays the same
-			}
+            value=getCardIndex(value);
 			switch(suit)
 			{
 				case 1:
@@ -525,6 +509,9 @@
 		function setPos(rand,nat,elem)
 		{
 			showHide();
+			document.getElementById('cyclicalMath2').style.display='block';
+			document.getElementById('cyclicalMath2').innerHTML="<br>"; // Hides prev Cyclical Math calculation
+			document.getElementById('mathButton2').style.display='block'; //Show Cyclical "Show Math" button
 			POS2=CARD2=""; //reset POS2 and CARD2 (covers case of previous cut card)
 			if(rand==true)
 				POS=getRand(1,52);
@@ -578,13 +565,13 @@
 		function getSuit(card)
 		{
 			if(card.indexOf("spade") != -1)
-			{	return "Spades";	}
+			{	return "&spades;";	}
 			else if(card.indexOf("heart") != -1)
-			{	return "Hearts";	}
+			{	return "&hearts;";	}
 			else if(card.indexOf("club") != -1)
-			{	return "Clubs";	}
+			{	return "&clubs;";	}
 			else if(card.indexOf("diam") != -1)
-			{	return "Diamonds";	}
+			{	return "&diams;";	}
 		}
 		function getCardVal(CARD)
 		{
@@ -600,6 +587,43 @@
 				default: val=CARD.substring(0,1);
 			}
 			return val;
+		}
+		function getCardIndex(value)
+		{
+			//returns card index from integer value passed
+			switch(value)
+			{
+				case 1:
+					value='A';
+					break;
+				case 11:
+					value='J';
+					break;
+				case 12:
+					value='Q';
+					break;
+				case 13:
+					value='K';
+					break;
+				default:
+					// pass, value stays the same
+			}
+			return value;
+		}
+	    function getSuitOrder(min,DECK)
+		{
+			//Returns array of 4 suits in cyclical order (starts from min)
+			//card to number: requires getFirstMatePos() return value -1 to be passed as min arg
+			//number to card: requires DECK.length-1 passed as min arg
+			var suits=[];
+			
+			for(var i=0;i<4;i++)
+			{
+			    if(min==DECK.length) //past bottom card
+			        min=0; //first card
+			    suits.push(getSuit(DECK[min++]));
+			}
+			return suits;
 		}
 		function getBaseCard(suit,DECK)
 		{
@@ -648,6 +672,45 @@
 			    mathAlert.innerHTML+=((parseInt(baseVal)+13-cardVal)*4)+"-"+baseCardFromBottom+"="+(((parseInt(baseVal)+13-cardVal)*4)-baseCardFromBottom);
 			}   
 			mathAlert.innerHTML+="<br>";
+		}
+		function whatCard(POS,DECK)
+		{
+			var q=parseInt(POS/4);
+			var r=POS%4;
+			var bottomCard=DECK[DECK.length-1];
+			var bottomCardVal=getCardVal(bottomCard);
+			var suitOrder=getSuitOrder(DECK.length-1,DECK); //array
+			
+			var mathAlert=document.getElementById('cyclicalMath2');
+			mathAlert.innerHTML=POS+" / 4 = "+q+" R<u>"+r+"</u><br>";
+			
+			if(q<bottomCardVal)
+			{
+				var temp=(bottomCardVal-q);
+				var ans=(temp+(3*r))
+			    mathAlert.innerHTML+=bottomCardVal+" - "+q+" = "+temp+"<br>";
+			    mathAlert.innerHTML+=temp+" + (3 x <u>"+r+"</u>)"+" = "+ans;
+			    if(ans > 13)
+			    {
+					ans-=13;
+			        mathAlert.innerHTML+="<br>"+(temp+(3*r))+" - 13 = "+ans;
+			    }
+			    mathAlert.innerHTML+="<br>Value: <b>"+getCardIndex(ans)+"</b><br>";
+			}
+			else
+			{
+				var temp=(q-bottomCardVal);
+			    mathAlert.innerHTML+=q+" - "+bottomCardVal+" = "+temp+"<br>";
+			    mathAlert.innerHTML+="(3 x <u>"+r+"</u>) - "+temp;
+			}
+			mathAlert.innerHTML+="<br>";
+		    for(var i=0;i<suitOrder.length;i++)
+			{
+				  var color=(isRed(suitOrder[i]))?'darkred':'black';
+		          mathAlert.innerHTML+="<b style='color:"+color+";'>"+suitOrder[i]+"</b> | ";
+		    }
+		    mathAlert.innerHTML+="<br>0 | 1 | 2 | 3<br>";
+		    mathAlert.innerHTML+=r+" = <b>"+suitOrder[r]+"</b><br>";
 		}
 		function guessGroup(gtype)
 		{
@@ -835,8 +898,7 @@
 				<br>
 				<tt id='posbottom' class='bottomcount'></tt>
 				<input type="button" value="Show Position" class="new" id="showpos" onClick="javascript:showPos();this.style.display='none';">
-				<!-- Cyclical Math Section -->
-	            
+				<!-- Cyclical Math Section -->           
 	            <input type='button' value='Show Math' id='mathButton' onClick='javascript:whatNumber(CARD,DECK);this.style.display="none";' style="font-size:80px;">
 	            <span id="cyclicalMath" style="display:none;"></span>
 	            <!-- End Cyclical Math Section -->
@@ -848,8 +910,11 @@
 				<em></em> <!-- 1 -->
 				<br>
 				<tt id='posbottom2' class='bottomcount'></tt>
-				
 				<input type="button" value="Show Card" class="new" id="showcard" onClick="javascript:showCard();this.style.display='none';">
+				<!-- Cyclical Math Section -->
+	            <input type='button' value='Show Math' id='mathButton2' onClick='javascript:whatCard(POS,DECK);this.style.display="none";' style="font-size:80px;">
+	            <span id="cyclicalMath2" style="color:gray;display:none;"></span>
+	            <!-- End Cyclical Math Section -->
 			</center>
 
 	</div>

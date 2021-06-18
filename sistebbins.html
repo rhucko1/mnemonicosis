@@ -701,7 +701,8 @@
 			{
 				var temp=(q-bottomCardVal);
 			    mathAlert.innerHTML+=q+" - "+bottomCardVal+" = "+temp+"<br>";
-			    mathAlert.innerHTML+="(3 x <u>"+r+"</u>) - "+temp+" = "+((3*r)-temp)+"<br>";
+			    mathAlert.innerHTML+="(3 x <u>"+r+"</u>) - "+temp+" = "+((3*r)-temp);
+			    mathAlert.innerHTML+="<br>Value: <b>"+getCardIndex(((3*r)-temp))+"</b><br>";
 			}
 			mathAlert.innerHTML+="<br>";
 		    for(var i=0;i<suitOrder.length;i++)

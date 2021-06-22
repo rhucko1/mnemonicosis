@@ -33,6 +33,7 @@
 		// - Added Spectator's Names and Spelling of Cards for better posibilities and to make more realistic.
 		// - Added Four of a kind and suit options
 		// - Added ACAAN
+		// - Added Games
 		////////////////////////////////////////////////////////////////
 		var DECK="J&spades; K&clubs; 5&clubs; 2&hearts; 9&spades; A&spades; 3&hearts; 6&clubs; 8&diams; A&clubs; 10&spades; 5&hearts; 2&diams; K&diams; 7&diams; 8&clubs; 3&spades; A&diams; 7&spades; 5&spades; Q&diams; A&hearts; 8&spades; 3&diams; 7&hearts; Q&hearts; 5&diams; 7&clubs; 4&hearts; K&hearts; 4&diams; 10&diams; J&clubs; J&hearts; 10&clubs; J&diams; 4&spades; 10&hearts; 6&hearts; 3&clubs; 2&spades; 9&hearts; K&spades; 6&spades; 4&clubs; 8&hearts; 9&clubs; Q&spades; 6&diams; Q&clubs; 2&clubs; 9&diams;";
 		//MNEMONICA: "4C 2H 7D 3C 4H 6D AS 5H 9S 2S QH 3D QC 8H 6S 5S 9H KC 2D JH 3S 8S 6H 10C 5D KD 2C 3H 8D 5C KS JD 8C 10S KH JC 7S 10H AD 4S 7H 4D AC 9C JS QD 7C QS 10D 6C AH 9D"; 
@@ -190,18 +191,18 @@
 		var showDeck=function(min,max)
 		{
 			 var spreadcount=1;
-			 document.getElementById('alert').style.color="darkgreen";
-			 document.getElementById('alert').innerHTML="<br><br><br>Current Spread: <br><br>|";
+			 document.getElementById('alert1').style.color="darkgreen";
+			 document.getElementById('alert1').innerHTML="<br><br><br>Current Spread: <br><br>|";
 			 
 			 if(STATE==="UP") // if deck currently face-up (display in reverse)
 				 for(var i=max-1;i>=min;i--)
 				 {
 					color=(isRed(DECK[i]))?"darkred":"black";
-					document.getElementById('alert').style.color="gray";
-					document.getElementById('alert').innerHTML+="<i style='color:"+color+";font-size:80px;'>"+DECK[i]+"</i>";
+					document.getElementById('alert1').style.color="gray";
+					document.getElementById('alert1').innerHTML+="<i style='color:"+color+";font-size:80px;'>"+DECK[i]+"</i>";
 					if((spreadcount==13) || (spreadcount==26) || (spreadcount==39))
-						document.getElementById('alert').innerHTML+="|&nbsp;<tt style='font-size:30px;color:black;'>--&gt;</tt><br><tt style='font-size:30px;color:black;'>...</tt>";
-					document.getElementById('alert').innerHTML+="|"
+						document.getElementById('alert1').innerHTML+="|&nbsp;<tt style='font-size:30px;color:black;'>--&gt;</tt><br><tt style='font-size:30px;color:black;'>...</tt>";
+					document.getElementById('alert1').innerHTML+="|"
 					spreadcount++;
 				 }
 
@@ -210,16 +211,16 @@
 				 for(var i=min;i<max;i++)
 				 {
 					color=(isRed(DECK[i]))?"darkred":"black";
-					document.getElementById('alert').style.color="gray";
-					document.getElementById('alert').innerHTML+="<i style='color:"+color+";font-size:80px;'>"+DECK[i]+"</i>";
+					document.getElementById('alert1').style.color="gray";
+					document.getElementById('alert1').innerHTML+="<i style='color:"+color+";font-size:80px;'>"+DECK[i]+"</i>";
 					if((spreadcount==13) || (spreadcount==26) || (spreadcount==39))
-						document.getElementById('alert').innerHTML+="|&nbsp;<tt style='font-size:30px;color:black;'>--&gt;</tt><br><tt style='font-size:30px;color:black;'>...</tt>";
-					document.getElementById('alert').innerHTML+="|"
+						document.getElementById('alert1').innerHTML+="|&nbsp;<tt style='font-size:30px;color:black;'>--&gt;</tt><br><tt style='font-size:30px;color:black;'>...</tt>";
+					document.getElementById('alert1').innerHTML+="|"
 					spreadcount++;
 				 }
 			 }
-			 document.getElementById('alert').innerHTML+=TAP_OR_CLICK;
-			 document.getElementById('alert').style.visibility="visible";
+			 document.getElementById('alert1').innerHTML+=TAP_OR_CLICK;
+			 document.getElementById('alert1').style.visibility="visible";
 
 		}
 		var preCutOff=function()
@@ -237,13 +238,13 @@
 					['RANDOM',1,52]];
 				var cutsizerows=8;
 				var cutsizecols=3;
-				document.getElementById('alert').innerHTML="<br><br><b style='font-size:100px;'>Cut Off: </b><br><br>";
+				document.getElementById('alert1').innerHTML="<br><br><b style='font-size:100px;'>Cut Off: </b><br><br>";
 				for(var i=0;i<cutsizerows;i++)
 				{
-					document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='"+cutsize[i][0]+"' class='cutsize' onClick='javascript:cutOff("+cutsize[i][1]+","+cutsize[i][2]+");'>";
+					document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='"+cutsize[i][0]+"' class='cutsize' onClick='javascript:cutOff("+cutsize[i][1]+","+cutsize[i][2]+");'>";
 				}
-				document.getElementById('alert').innerHTML+=TAP_OR_CLICK;
-				document.getElementById('alert').style.visibility="visible";
+				document.getElementById('alert1').innerHTML+=TAP_OR_CLICK;
+				document.getElementById('alert1').style.visibility="visible";
 				document.getElementById('guess').style.display='none'; // Hide guess
 				
 				if(STATE==="UP")
@@ -388,19 +389,19 @@
 		var showPos2=function(){document.getElementById('cutcard').innerHTML="<br>Cut Card: <b>"+CARD2+NAT+" = "+POS2+"<br><tt class='bottomcount' style='font-size:45px;'>(^ From Bottom = "+(DECK.length-POS2+1)+")</tt></b><br>";}
 		var preCutDeck=function()
 		{
-			document.getElementById('alert').innerHTML="<br><br><b style='color:darkgreen;'>Cut Top to Bottom:</b><br><br>";
+			document.getElementById('alert1').innerHTML="<br><br><b style='color:darkgreen;'>Cut Top to Bottom:</b><br><br>";
 			for(var i=1;i<DECK.length;i++)
-				document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:cutDeck("+i+");hideDivs();'>";
+				document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:cutDeck("+i+");hideDivs();'>";
 
-			document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
+			document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
 			
-			document.getElementById('alert').innerHTML+="<br><br><b style='color:darkgreen;'>Cut Bottom to Top:</b><br><br>";
+			document.getElementById('alert1').innerHTML+="<br><br><b style='color:darkgreen;'>Cut Bottom to Top:</b><br><br>";
 			for(var i=1;i<DECK.length;i++)
-				document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:DECK.reverse();cutDeck("+i+");DECK.reverse();hideDivs();'>";
+				document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:DECK.reverse();cutDeck("+i+");DECK.reverse();hideDivs();'>";
 
-			document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
-			document.getElementById('alert').innerHTML+=TAP_OR_CLICK;
-			document.getElementById('alert').style.visibility="visible";
+			document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
+			document.getElementById('alert1').innerHTML+=TAP_OR_CLICK;
+			document.getElementById('alert1').style.visibility="visible";
 		}
 		var cutDeck=function(mid) // A Full/Complete Cut (cut and carry)
 		{
@@ -421,9 +422,9 @@
 			DECK=rhalf.concat(lhalf); // DECK = rhalf + lhalf  (the cut)
 			//alert("New Order After Cut: "+DECK);
 			//alert("The deck has been cut and completed. You may want to glimpse the bottom card.");
-			 document.getElementById('alert').style.color="darkgreen";
-			 document.getElementById('alert').innerHTML="<br><br><br><br>The Deck has been cut!<br><br>(You may want to glimpse the bottom card)"+TAP_OR_CLICK;
-			 document.getElementById('alert').style.visibility="visible";
+			 document.getElementById('alert1').style.color="darkgreen";
+			 document.getElementById('alert1').innerHTML="<br><br><br><br>The Deck has been cut!<br><br>(You may want to glimpse the bottom card)"+TAP_OR_CLICK;
+			 document.getElementById('alert1').style.visibility="visible";
 		}
 		var showBottomCard=function()
 		{
@@ -437,9 +438,9 @@
 		}
 		var showThisCard=function(card,msg)
 		{
-			 document.getElementById('alert').style.color=(isRed(card))?"darkred":"black";
-			 document.getElementById('alert').innerHTML="<br><br><br><br>"+msg+card+TAP_OR_CLICK;
-			 document.getElementById('alert').style.visibility="visible";
+			 document.getElementById('alert1').style.color=(isRed(card))?"darkred":"black";
+			 document.getElementById('alert1').innerHTML="<br><br><br><br>"+msg+card+TAP_OR_CLICK;
+			 document.getElementById('alert1').style.visibility="visible";
 		}
 		function isRed(card)
 		{
@@ -572,9 +573,9 @@
 		function guessGroup(gtype)
 		{
 			
-			document.getElementById('alert').innerHTML='<h1>Choose a '+gtype+':</h1>';
-			document.getElementById('alert').style.color='black';
-			document.getElementById('alert').style.visibility='visible';			
+			document.getElementById('alert1').innerHTML='<h1>Choose a '+gtype+':</h1>';
+			document.getElementById('alert1').style.color='black';
+			document.getElementById('alert1').style.visibility='visible';			
 			
 			// Four of a Kind or Suit..? set max
 			var maxg=(gtype.indexOf("Four") == -1)?13:4;
@@ -586,7 +587,7 @@
 				for(var x=1;x<=13;x++)
 				{
 					y=(x==1)?'A':(x==11)?'J':(x==12)?'Q':(x==13)?'K':x;
-					document.getElementById('alert').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
+					document.getElementById('alert1').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
 				}
 			}
 			else
@@ -594,7 +595,7 @@
 				for(var x=1;x<=4;x++)
 				{
 					y=(x==1)?'clubs':(x==2)?'hearts':(x==3)?'spades':(x==4)?'diams':x;
-					document.getElementById('alert').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
+					document.getElementById('alert1').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
 				
 				}
 			}
@@ -618,6 +619,100 @@
 				}
 			document.getElementById('alert2').innerHTML+=values;
 			document.getElementById('alert2').innerHTML+=TAP_OR_CLICK;
+		}
+		function nextCardAnswer(nextcard,isred)
+		{
+			//passing isred to fix bug
+			var alert=document.getElementById('alert3');
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
+			alert.innerHTML+="<b id='nextCard02' style='font-size:200px;'>"+nextcard+"</b><br>";
+			document.getElementById('nextCard02').style.color=(isred)?"darkred":"black";
+			alert.innerHTML+="<input type='button' value='Play Again' onClick='javascript:nextCard();' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function nextCard()
+		{
+			var alert=document.getElementById('alert2');
+			var pos=getRand(1,DECK.length-1);
+			var card=getCard(pos); //returns card at pos -1
+			var nextcard=DECK[pos];
+			
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>What's the next card?</b><br>";
+			alert.innerHTML+="<b id='nextCard01' style='font-size:200px;'>"+card+"</b><br>";
+			document.getElementById('nextCard01').style.color=(isRed(card))?"darkred":"black";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:nextCardAnswer(\""+nextcard+"\","+isRed(nextcard)+");' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function whichCardsAnswer(cards,answerpos,colors)
+		{
+			var alert=document.getElementById('alert3');
+			var answerpos=answerpos.split(","); //passed as string, need array
+			var cards=cards.split(","); //passed as string, need array
+			var colors=colors.split(","); //passed as string, need array
+			
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
+			for(var i=0;i<answerpos.length;i++)
+			{
+			    alert.innerHTML+="<b style='color:"+colors[i]+"'>"+cards[answerpos[i]];
+			    if(i!=answerpos.length-1)
+			       alert.innerHTML+=", "; 
+			}
+			alert.innerHTML+="<br><input type='button' value='Play Again' onClick='javascript:whichCards();' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function whichCards()
+		{
+			var alert=document.getElementById('alert2');
+			var pos=getRand(1,DECK.length-5); //
+			var cards=[], 
+			    answerpos=[], //positions of the answers
+			    colors=[];    //cards color
+			var max=3, counter=0;
+			
+			for(var i=0;i<5;i++)
+			    cards.push(getCard(pos+i)); //returns card at pos -1
+			
+		    
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Which cards are missing?</b><br>";
+			
+			for(var i=0;i<5;i++)
+			{
+				var X=getRand(-1,1);//get a true or false value at random
+				var cardcolor=(isRed(cards[i]))?"darkred":"black";
+				
+				if(counter<3&&X)
+				{
+					alert.innerHTML+="<b>x</b>";
+					answerpos.push(i);
+					colors.push(cardcolor);
+				    counter++;
+				}
+				else
+				{
+				    alert.innerHTML+="<b id='card'"+i+" style='color:"+cardcolor+"'>"+cards[i]+"</b>";
+				}
+				alert.innerHTML+="<b style='color:gray;'>|</b>";
+			}
+			alert.innerHTML+="<br>";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:whichCardsAnswer(\""+cards+"\",\""+answerpos+"\",\""+colors+"\");' style='font-size:50px;'>";
+		    alert.innerHTML+="<br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function showGames()
+		{
+			
+			var alert=document.getElementById('alert1');
+			
+			alert.style.visibility="visible";
+			alert.style.color="darkgreen";
+			alert.innerHTML="<br><br><br><b>Games:</b><br>";
+			alert.innerHTML+="<input type='button' value='Next Card' onClick='javascript:nextCard();' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Which Cards?' onClick='javascript:whichCards();' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
 		}
 		function isNatural(card,pos)
 		{
@@ -681,7 +776,7 @@
 				display:none;
 				z-index:100;
 			}
-			span#alert,span#alert2{
+			[id^=alert]{
 				z-index:200;
 				position:absolute;
 				top:0px;
@@ -733,6 +828,8 @@
 		<input type="button" value="4 of a kind" class="mainmenu" onClick="javascript:guessGroup('Four of a Kind');">
 		<!-- Guess Spades -->
 		<input type="button" value="Suit" class="mainmenu" onClick="javascript:guessGroup('Suit');">
+		<!-- Games -->
+		<input type="button" value="Games" class="mainmenu" onClick="javascript:showGames();">
 		
 		<!-- Flip/Face Deck -->
 		<script language="JavaScript" type="text/javascript">
@@ -790,7 +887,9 @@
 	<span id="distance"></span>
 	<br><br>
 	<tt class="note">* = Natural</tt>
-	<span id="alert" onClick="javascript:this.style.visibility='hidden';"></span>
-	<span id="alert2" onClick="javascript:this.style.visibility='hidden';"></span>
+    <script language="JavaScript" type="text/javascript">
+	     for(var x=0;x<3;x++) //Create Place holders for Alerts
+	         document.write('<span id="alert'+(parseInt(x)+1)+'" onClick="javascript:this.style.visibility=\'hidden\';"></span>');
+	</script> 
 	</body>
 </html>

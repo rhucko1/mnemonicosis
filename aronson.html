@@ -454,6 +454,10 @@
 		{
 			return (x >= y)?true:false;
 		}
+		function shuffle(array)
+		{
+            return array.sort(() => Math.random() - 0.5);
+        }
 		function getRand(min,max)
 		{
 			return Math.floor((Math.random())*(max-min))+min;
@@ -702,7 +706,7 @@
 		    alert.innerHTML+="<br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
-		function spotTheLieAnswer(truth,lie,colors)
+		function spotTheLieAnswer(truth,lie,colors,mix)
 		{
 			var alert=document.getElementById('alert3');
 			var colors=colors.split(","); //passed as string, need array
@@ -711,10 +715,10 @@
 			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
 			alert.innerHTML+="<b style='color:black'>Lie: </b><b style='color:"+colors[1]+"'>"+lie+"</b><br>";
 			alert.innerHTML+="<b style='color:black'>Truth: </b><b style='color:"+colors[0]+"'>"+truth+"</b><br>";
-			alert.innerHTML+="<input type='button' value='Play Again' onClick='javascript:spotTheLie();' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Play Again' onClick='javascript:spotTheLie("+mix+");' style='font-size:50px;'><br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
-		function spotTheLie()
+		function spotTheLie(mix)
 		{
 			var alert=document.getElementById('alert2'),
 			    pos=getRand(1,DECK.length-3), //random number for position in deck for spread
@@ -723,7 +727,14 @@
 			    colors=[],    //card color pos 0 = truth, 1 = lie
 			    liePos=getRand(0,3),//get card position to lie on
 			    lie,//the card that is incorrect
-			    truth;
+			    truth,
+			    pad="";
+			    
+			if(mix)
+			{
+			    cards=shuffle(cards);
+			    pad="<b style='color:gray;font-size:80px;'>(Cards Mixed)</b><br>";
+			}
 			
 			for(var i=0;i<3;i++)
 			    cards.push(getCard(pos+i)); //returns card at pos - 1
@@ -738,7 +749,7 @@
 			}
 		    
 			alert.style.visibility="visible";
-			alert.innerHTML="<br><br><br><b>Spot the Lie and Correct it!</b><br>";
+			alert.innerHTML="<br><br><br><b>Spot the Lie and Correct it!</b><br>"+pad;
 			
 			lie=DECK[pos2];
 			var liecolor=(isRed(lie))?"darkred":"black";
@@ -762,7 +773,7 @@
 				alert.innerHTML+="<b style='color:gray;'>|</b>";
 			}
 			alert.innerHTML+="<br>";
-			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\");' style='font-size:50px;'>";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\",\""+mix+"\");' style='font-size:50px;'>";
 		    alert.innerHTML+="<br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
@@ -776,7 +787,8 @@
 			alert.innerHTML="<br><br><br><b>Games:</b><br>";
 			alert.innerHTML+="<input type='button' value='Next Card' onClick='javascript:nextCard();' style='font-size:50px;'><br>";
 			alert.innerHTML+="<input type='button' value='Which Cards?' onClick='javascript:whichCards();' style='font-size:50px;'><br>";
-			alert.innerHTML+="<input type='button' value='Spot the Lie!' onClick='javascript:spotTheLie();' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Spot the Lie!' onClick='javascript:spotTheLie(false);' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Mixed Spot the Lie!' onClick='javascript:spotTheLie(true);' style='font-size:50px;'><br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
 		function isNatural(card,pos)

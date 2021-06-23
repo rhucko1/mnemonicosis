@@ -718,6 +718,45 @@
 			alert.innerHTML+="<input type='button' value='Play Again' onClick='javascript:spotTheLie("+mix+");' style='font-size:50px;'><br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
+		function repaintSpotTheLie(mix,peek,pos,pos2,liePos,cards,colors,cardcolors,peekcolor)
+		{
+			var alert=document.getElementById('alert4'),
+			    lie,//the card that is incorrect
+			    truth,
+			    pad="";
+			    
+			cards=cards.split(","); 
+			colors=colors.split(",");
+			cardcolors=cardcolors.split(",");
+			    
+			pad="<b style='color:gray;font-size:80px;'>(Cards Mixed)</b><br>";
+			
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Spot the Lie and Correct it!</b><br>"+pad;
+			
+			lie=DECK[pos2];
+			var liecolor=colors[1];
+			
+			for(var i=0;i<3;i++)
+			{
+				if(i==liePos)
+				{
+					
+					alert.innerHTML+="<b style='color:"+liecolor+"'>"+lie+"</b>";
+					truth=cards[liePos];
+				}
+				else
+				{
+				    alert.innerHTML+="<b style='color:"+cardcolors[i]+"'>"+cards[i]+"</b>";
+				}
+				alert.innerHTML+="<b style='color:gray;'>|</b>";
+			}
+			alert.innerHTML+="<br>";
+			alert.innerHTML+="<b style='font-size:60px'>Previous Card: </b><b style='color:"+peekcolor+";font-size:60px'>"+peek+"</b><br>";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\",\""+mix+"\");' style='font-size:50px;'>";
+		    alert.innerHTML+="<br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
 		function spotTheLie(mix)
 		{
 			var alert=document.getElementById('alert2'),
@@ -725,10 +764,13 @@
 			    pos2=getRand(1,DECK.length-3), //random number for position in deck for lie
 			    cards=[], //spread of cards
 			    colors=[],    //card color pos 0 = truth, 1 = lie
+			    cardcolors=[],//color of cards array
 			    liePos=getRand(0,3),//get card position to lie on
 			    lie,//the card that is incorrect
 			    truth,
-			    pad="";
+			    pad="",
+			    peek,
+			    peekcolor;
 			    
 			if(mix)
 			{
@@ -748,6 +790,9 @@
 			    }
 			}
 		    
+		    peek=(pos-1<=0)?DECK[DECK.length-1]:getCard(pos-1); //set peeked card (prev card to spread)
+		    peekcolor=(isRed(peek))?"darkred":"black";
+		    
 			alert.style.visibility="visible";
 			alert.innerHTML="<br><br><br><b>Spot the Lie and Correct it!</b><br>"+pad;
 			
@@ -762,6 +807,7 @@
 				{
 					
 					alert.innerHTML+="<b style='color:"+liecolor+"'>"+lie+"</b>";
+					cardcolors.push(cardcolor);
 					colors.push(cardcolor);
 					colors.push(liecolor);
 					truth=cards[liePos];
@@ -769,10 +815,13 @@
 				else
 				{
 				    alert.innerHTML+="<b style='color:"+cardcolor+"'>"+cards[i]+"</b>";
+				    cardcolors.push(cardcolor);
 				}
 				alert.innerHTML+="<b style='color:gray;'>|</b>";
 			}
 			alert.innerHTML+="<br>";
+			if(mix)
+			    alert.innerHTML+="<input type='button' style='font-size:50px;' value='Peek previous card' onClick='repaintSpotTheLie(\""+mix+"\",\""+peek+"\",\""+pos+"\",\""+pos2+"\",\""+liePos+"\",\""+cards+"\",\""+colors+"\",\""+cardcolors+"\",\""+peekcolor+"\")'><br>";
 			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\",\""+mix+"\");' style='font-size:50px;'>";
 		    alert.innerHTML+="<br>";
 			alert.innerHTML+=TAP_OR_CLICK;
@@ -965,7 +1014,7 @@
 	<br><br>
 	<tt class="note">* = Natural</tt>
     <script language="JavaScript" type="text/javascript">
-	     for(var x=0;x<3;x++) //Create Place holders for Alerts
+	     for(var x=0;x<4;x++) //Create Place holders for Alerts
 	         document.write('<span id="alert'+(parseInt(x)+1)+'" onClick="javascript:this.style.visibility=\'hidden\';"></span>');
 	</script> 
 	</body>

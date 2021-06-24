@@ -690,7 +690,8 @@
 			{
 				var X=getRand(-1,1);//get a true or false value at random
 				var cardcolor=(isRed(cards[i]))?"darkred":"black";
-				
+				if(i==4&&counter==0)//no X's so set one
+				    X=1;
 				if(counter<max&&X)
 				{
 					alert.innerHTML+="<b>x</b>";

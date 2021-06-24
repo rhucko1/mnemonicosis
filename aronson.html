@@ -887,14 +887,14 @@
 			        color=(isRed(questions[i]))?"darkred":"black";
 			        colors.push(color);
 			        answers.push(pos[i]);
-			        answercolors.push("darkgreen");
+			        answercolors.push("black");
 			    }
 			    else
 			    {
 					//Number
 			        questions.push(pos[i]); //returns card at pos - 1
 			        color=(isRed(getCard(questions[i])))?"darkred":"black";
-			        colors.push("darkgreen");
+			        colors.push("black");
 			        answers.push(getCard(pos[i]));
 			        answercolors.push(color);
 				}

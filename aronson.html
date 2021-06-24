@@ -462,6 +462,10 @@
 		{
 			return Math.floor((Math.random())*(max-min))+min;
 		}
+		/*function dups(arr){
+			//check is duplicates exists, returns true or false
+            return new Set(arr).size !== arr.length 
+        }*/
 		function setCard(elem) // Pick/generate Card Randomly
 		{
 			var value=getRand(1,13);
@@ -626,7 +630,6 @@
 		}
 		function nextCardAnswer(nextcard,isred)
 		{
-			//passing isred to fix bug
 			var alert=document.getElementById('alert3');
 			alert.style.visibility="visible";
 			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
@@ -785,8 +788,8 @@
 			{
 			    if(cards[i]==DECK[pos2]) //check for duplicates
 			    {
+					window.alert("Duplicates!");
 			        pos2=getRand(1,DECK.length-3); //if duplicate get another random pos
-			        i=0; //reset to check again
 			    }
 			}
 		    
@@ -826,6 +829,90 @@
 		    alert.innerHTML+="<br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
+		function cardsAndNumbersAnswer(answers,answercolors)
+		{
+			var alert=document.getElementById('alert3'),
+			answers=answers.split(","),
+			answercolors=answercolors.split(",");
+			
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
+			
+			//Display Answers (Cards and Numbers)
+			for(var i=0;i<3;i++)
+			{
+			    alert.innerHTML+="<b style='color:"+answercolors[i]+"'>"+answers[i]+"</b>";
+			    if(i!=2)
+			        alert.innerHTML+="<b>, </b>";
+			}
+			
+			alert.innerHTML+="<br><input type='button' value='Play Again' onClick='javascript:cardsAndNumbers();' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function cardsAndNumbers()
+		{
+			var alert=document.getElementById('alert2'),
+			    questions=[], //cards and numbers
+			    colors=[],//colors of cards and numbers
+			    pos=[], //card positions
+			    answers=[], //answers to questions
+			    answercolors=[]; //answer colors
+			    
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Name the Cards and Numbers!</b><br>";
+			
+			var last=""; //track is last was a card or number
+			
+			//get 3 random values
+			pos.push(getRand(1,17));
+			pos.push(getRand(18,35));
+			pos.push(getRand(36,DECK.length));
+			
+			pos=shuffle(pos);
+			
+			for(var i=0;i<3;i++)
+			{
+				var X=getRand(-1,1);//get a true or false value at random
+				
+				//Reduce the chance of getting all of the same        
+				if(last==X)
+				    X=getRand(-1,1);
+				    
+				var color;
+				
+				if(X)
+				{
+					//Card
+			        questions.push(getCard(pos[i])); //returns card at pos - 1
+			        color=(isRed(questions[i]))?"darkred":"black";
+			        colors.push(color);
+			        answers.push(pos[i]);
+			        answercolors.push("darkgreen");
+			    }
+			    else
+			    {
+					//Number
+			        questions.push(pos[i]); //returns card at pos - 1
+			        color=(isRed(getCard(questions[i])))?"darkred":"black";
+			        colors.push("darkgreen");
+			        answers.push(getCard(pos[i]));
+			        answercolors.push(color);
+				}
+				last=X;
+			}
+	 
+			//Display Questions (Cards and Numbers)
+			for(var i=0;i<3;i++)
+			{
+			    alert.innerHTML+="<b style='color:"+colors[i]+"'>"+questions[i]+"</b>";
+			    if(i!=2)
+			        alert.innerHTML+="<b>, </b>";
+			}
+			
+			alert.innerHTML+="<br><input type='button' value='Answer' onClick='javascript:cardsAndNumbersAnswer(\""+answers+"\",\""+answercolors+"\");' style='font-size:50px;'>";	
+			alert.innerHTML+="<br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
 		function showGames()
 		{
 			
@@ -838,6 +925,7 @@
 			alert.innerHTML+="<input type='button' value='Which Cards?' onClick='javascript:whichCards();' style='font-size:50px;'><br>";
 			alert.innerHTML+="<input type='button' value='Spot the Lie!' onClick='javascript:spotTheLie(false);' style='font-size:50px;'><br>";
 			alert.innerHTML+="<input type='button' value='Mixed Spot the Lie!' onClick='javascript:spotTheLie(true);' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Cards and Numbers' onClick='javascript:cardsAndNumbers();' style='font-size:50px;'><br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
 		function isNatural(card,pos)

@@ -914,6 +914,36 @@
 			alert.innerHTML+="<br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
+		function orderIt(direction,pos,IDNo)
+		{
+			var alert=document.getElementById('alert'+IDNo),
+			    card=DECK[pos];
+			
+			alert.style.visibility="visible";
+			alert.style.color="darkgreen";
+			alert.innerHTML="<b style='font-size:50px;color:gray;'>Order it! "+direction+"</b>";
+			if(pos!=DECK.length&&pos!=-1)
+			{
+				var color=(isRed(card))?"darkred":"black";
+			    alert.innerHTML+="<br><br><b>Name the next card!</b><br>";
+			    alert.innerHTML+="<b style='color:"+color+";font-size:200px;'>"+card+"</b>";
+			    
+			    if(direction=="forward")
+			        pos++;
+			    else if(direction=="backward")
+					pos--;
+                IDNo++;
+			    alert.innerHTML+="<br><input type='button' value='Next ->' onClick='javscript:orderIt(\""+direction+"\",\""+pos+"\",\""+IDNo+"\")' style='font-size:50px;'>";
+			}
+			else
+			{
+				alert.innerHTML+="<br><br><b>Great Job!</b><br>";
+			}
+			
+			
+			
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
 		function showGames()
 		{
 			
@@ -927,6 +957,9 @@
 			alert.innerHTML+="<input type='button' value='Spot the Lie!' onClick='javascript:spotTheLie(false);' style='font-size:50px;'><br>";
 			alert.innerHTML+="<input type='button' value='Mixed Spot the Lie!' onClick='javascript:spotTheLie(true);' style='font-size:50px;'><br>";
 			alert.innerHTML+="<input type='button' value='Cards and Numbers' onClick='javascript:cardsAndNumbers();' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Order it! Forward' onClick='javascript:orderIt(\"forward\",0,2);' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Order it! Random Cut' onClick='javascript:orderIt(\"forward\","+getRand(13,39)+",2);' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Order it! Backward' onClick='javascript:orderIt(\"backward\",51,2);' style='font-size:50px;'><br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
 		function isNatural(card,pos)
@@ -1103,7 +1136,7 @@
 	<br><br>
 	<tt class="note">* = Natural</tt>
     <script language="JavaScript" type="text/javascript">
-	     for(var x=0;x<4;x++) //Create Place holders for Alerts
+	     for(var x=0;x<(DECK.length+4);x++) //Create Place holders for Alerts
 	         document.write('<span id="alert'+(parseInt(x)+1)+'" onClick="javascript:this.style.visibility=\'hidden\';"></span>');
 	</script> 
 	</body>

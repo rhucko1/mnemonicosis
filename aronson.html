@@ -710,14 +710,24 @@
 		    alert.innerHTML+="<br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
-		function spotTheLieAnswer(truth,lie,colors,mix)
+		function spotTheLieAnswer(truth,lie,colors,mix,cards,cardcolors,liePos)
 		{
 			var alert=document.getElementById('alert3');
-			var colors=colors.split(","); //passed as string, need array
-			
-			alert.style.visibility="visible";
+			var colors=colors.split(","), //passed as string, need array
+			    cards=cards.split(","), //passed as string, need array
+			    cardcolors=cardcolors.split(","); //passed as string, need array
+			   
 			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
-			alert.innerHTML+="<b style='color:black'>Lie: </b><b style='color:"+colors[1]+"'>"+lie+"</b><br>";
+			for(var i=0;i<3;i++)
+			{
+				if(i==liePos)
+					alert.innerHTML+="<b style='color:"+colors[1]+";font-size:50px;' class='circle'>"+lie+"</b>";
+				else
+				    alert.innerHTML+="<b style='color:"+cardcolors[i]+";font-size:50px;'>"+cards[i]+"</b>";
+				alert.innerHTML+="<b style='color:gray;font-size:50px;'>|</b>";
+			}
+			alert.style.visibility="visible";
+			alert.innerHTML+="<br><b style='color:black'>Lie: </b><b style='color:"+colors[1]+"'>"+lie+"</b><br>";
 			alert.innerHTML+="<b style='color:black'>Truth: </b><b style='color:"+colors[0]+"'>"+truth+"</b><br>";
 			alert.innerHTML+="<input type='button' value='Play Again' onClick='javascript:spotTheLie("+mix+");' style='font-size:50px;'><br>";
 			alert.innerHTML+=TAP_OR_CLICK;
@@ -757,7 +767,7 @@
 			}
 			alert.innerHTML+="<br>";
 			alert.innerHTML+="<b style='font-size:60px'>Previous Card: </b><b style='color:"+peekcolor+";font-size:60px'>"+peek+"</b><br>";
-			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\",\""+mix+"\");' style='font-size:50px;'>";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\",\""+mix+"\",\""+cards+"\",\""+cardcolors+"\",\""+liePos+"\");' style='font-size:50px;'>";
 		    alert.innerHTML+="<br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
@@ -826,7 +836,7 @@
 			alert.innerHTML+="<br>";
 			if(mix)
 			    alert.innerHTML+="<input type='button' style='font-size:50px;' value='Peek previous card' onClick='repaintSpotTheLie(\""+mix+"\",\""+peek+"\",\""+pos+"\",\""+pos2+"\",\""+liePos+"\",\""+cards+"\",\""+colors+"\",\""+cardcolors+"\",\""+peekcolor+"\")'><br>";
-			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\",\""+mix+"\");' style='font-size:50px;'>";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\",\""+mix+"\",\""+cards+"\",\""+cardcolors+"\",\""+liePos+"\");' style='font-size:50px;'>";
 		    alert.innerHTML+="<br>";
 			alert.innerHTML+=TAP_OR_CLICK;
 		}
@@ -1060,6 +1070,15 @@
 				font-size:50px;
 				color:gray;
 			}
+			.circle {
+                border-radius: 50%;
+                width: 36px;
+                height: 36px;
+                padding: 8px;
+                background: #fff;
+                border: 2px solid #666;
+                color: #666;
+            }
 		</style>
 	</head>
 	<body>

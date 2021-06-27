@@ -13,7 +13,7 @@
 		Magic Principles from:
 		
             Mnemonica: Juan Tamariz
-			Mnemonicosis: Juan Tamariz
+			Mnemonicosis: Juan Tamariz	
 		*/
 		////////////////////////////////////////////////////////////////
 		// Code modified from previous Deck Memory Test JavaScript
@@ -36,7 +36,7 @@
 		// - Added Games
 		////////////////////////////////////////////////////////////////
 		var DECK="4&clubs; 2&hearts; 7&diams; 3&clubs; 4&hearts; 6&diams; A&spades; 5&hearts; 9&spades; 2&spades; Q&hearts; 3&diams; Q&clubs; 8&hearts; 6&spades; 5&spades; 9&hearts; K&clubs; 2&diams; J&hearts; 3&spades; 8&spades; 6&hearts; 10&clubs; 5&diams; K&diams; 2&clubs; 3&hearts; 8&diams; 5&clubs; K&spades; J&diams; 8&clubs; 10&spades; K&hearts; J&clubs; 7&spades; 10&hearts; A&diams; 4&spades; 7&hearts; 4&diams; A&clubs; 9&clubs; J&spades; Q&diams; 7&clubs; Q&spades; 10&diams; 6&clubs; A&hearts; 9&diams;"; 
-		//MNEMONICA: "4C 2H 7D 3C 4H 6D AS 5H 9S 2S QH 3D QC 8H 6S 5S 9H KC 2D JH 3S 8S 6H 10C 5D KD 2C 3H 8D 5C KS JD 8C 10S KH JC 7S 10H AD 4S 7H 4D AC 9C JS QD 7C QS 10D 6C AH 9D"; 
+	    //MNEMONICA: "4C 2H 7D 3C 4H 6D AS 5H 9S 2S QH 3D QC 8H 6S 5S 9H KC 2D JH 3S 8S 6H 10C 5D KD 2C 3H 8D 5C KS JD 8C 10S KH JC 7S 10H AD 4S 7H 4D AC 9C JS QD 7C QS 10D 6C AH 9D"; 
 		//TEST STACK: "AS 2S 3S 4S 5S 6S 7S 8S 9S 10S JS QS KS AH 2H 3H 4H 5H 6H 7H 8H 9H 10H JH QH KH AC 2C 3C 4C 5C 6C 7C 8C 9C 10C JC QC KC AD 2D 3D 4D 5D 6D 7D 8D 9D 10D JD QD KD";
 		//DECK=DECK.toUpperCase();
 		DECK=DECK.split(" ");
@@ -794,15 +794,24 @@
 			
 			for(var i=0;i<3;i++)
 			    cards.push(getCard(pos+i)); //returns card at pos - 1
-			
-			for(var i=0;i<3;i++)
+                
+            var nomatch=0;
+			while(nomatch<3)
 			{
-			    if(cards[i]==DECK[pos2]) //check for duplicates
+			    for(var i=0;i<3;i++)
 			    {
-					//window.alert("Duplicates!");
-			        pos2=getRand(1,DECK.length-3); //if duplicate get another random pos
+			        if(cards[i]==DECK[pos2]) //check for duplicates
+			        {
+			    		//window.alert("Duplicates!");
+			            pos2=getRand(1,DECK.length-3); //if duplicate get another random pos
+                        nomatch=0; //reset
+			        }
+                    else
+                    {
+                        nomatch++;
+                    }
 			    }
-			}
+		    }
 		    
 		    peek=(pos-1<=0)?DECK[DECK.length-1]:getCard(pos-1); //set peeked card (prev card to spread)
 		    peekcolor=(isRed(peek))?"darkred":"black";
@@ -980,7 +989,7 @@
 					return true;
 				if((pos==1)||(pos==2)||(pos==DECK.length)||(pos==DECK.length-1))
 					return true;
-				if(DECK[0]==FIRST||DECK[0]==LAST)
+				/*if(DECK[0]==FIRST||DECK[0]==LAST)
 					if((card=='A&clubs;')||(card=='10&spades;')||(card=='5&hearts;')||(card=='2&diams;')||(card=='K&diams;')||(card=='7&diams;')||(card=='2&spades;')||(card=='3&clubs;')||(card=='6&hearts;')||(card=='10&hearts;'))
 						return true;
 				if(DECK[0]==FIRST) // face-down in starting pos
@@ -988,7 +997,7 @@
 						return true;
 				if(DECK[0]==LAST) // face-up in starting pos
 					if(((pos<=15)&&(pos>=12)) || ((pos<=43)&&(pos>=38)))
-						return true;
+						return true;*/
 						
 				return false;
 		}

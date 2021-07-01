@@ -1020,16 +1020,16 @@
             
             for(var i=0;i<cards.length;i++)
             {
-                if(spotcourt[i]==choice)
-                    document.getElementById("presensing").innerHTML="Yes. (See above)";
-                else
-                    document.getElementById("presensing").innerHTML="No. (See above)";
-                    
                 if(spotcourt[i]=="spot")
                     document.getElementById('selection'+(i+1)).innerHTML+=" <b style='font-size:50px;'>spot</b>";
                 else
                     document.getElementById('selection'+(i+1)).innerHTML+=" <b style='font-size:50px;'>court</b>";
             }
+            
+            if(spotcourt[0]==choice||spotcourt[1]==choice)
+                document.getElementById("presensing").innerHTML="Yes. (See above)";
+            else
+                document.getElementById("presensing").innerHTML="No. (See above)";
         }
         function myopiaCheckHighMedLow(cards,highmedlow,choice)
         {

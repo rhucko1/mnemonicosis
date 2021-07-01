@@ -13,7 +13,7 @@
 		Magic Principles from:
 		
             Mnemonica: Juan Tamariz
-			Mnemonicosis: Juan Tamariz	
+			Mnemonicosis: Juan Tamariz
 		*/
 		////////////////////////////////////////////////////////////////
 		// Code modified from previous Deck Memory Test JavaScript
@@ -36,7 +36,7 @@
 		// - Added Games
 		////////////////////////////////////////////////////////////////
 		var DECK="4&clubs; 2&hearts; 7&diams; 3&clubs; 4&hearts; 6&diams; A&spades; 5&hearts; 9&spades; 2&spades; Q&hearts; 3&diams; Q&clubs; 8&hearts; 6&spades; 5&spades; 9&hearts; K&clubs; 2&diams; J&hearts; 3&spades; 8&spades; 6&hearts; 10&clubs; 5&diams; K&diams; 2&clubs; 3&hearts; 8&diams; 5&clubs; K&spades; J&diams; 8&clubs; 10&spades; K&hearts; J&clubs; 7&spades; 10&hearts; A&diams; 4&spades; 7&hearts; 4&diams; A&clubs; 9&clubs; J&spades; Q&diams; 7&clubs; Q&spades; 10&diams; 6&clubs; A&hearts; 9&diams;"; 
-	   //MNEMONICA: "4C 2H 7D 3C 4H 6D AS 5H 9S 2S QH 3D QC 8H 6S 5S 9H KC 2D JH 3S 8S 6H 10C 5D KD 2C 3H 8D 5C KS JD 8C 10S KH JC 7S 10H AD 4S 7H 4D AC 9C JS QD 7C QS 10D 6C AH 9D"; 
+	    //MNEMONICA: "4C 2H 7D 3C 4H 6D AS 5H 9S 2S QH 3D QC 8H 6S 5S 9H KC 2D JH 3S 8S 6H 10C 5D KD 2C 3H 8D 5C KS JD 8C 10S KH JC 7S 10H AD 4S 7H 4D AC 9C JS QD 7C QS 10D 6C AH 9D"; 
 		//TEST STACK: "AS 2S 3S 4S 5S 6S 7S 8S 9S 10S JS QS KS AH 2H 3H 4H 5H 6H 7H 8H 9H 10H JH QH KH AC 2C 3C 4C 5C 6C 7C 8C 9C 10C JC QC KC AD 2D 3D 4D 5D 6D 7D 8D 9D 10D JD QD KD";
 		//DECK=DECK.toUpperCase();
 		DECK=DECK.split(" ");
@@ -1020,16 +1020,16 @@
             
             for(var i=0;i<cards.length;i++)
             {
-                if(spotcourt[i]==choice)
-                    document.getElementById("presensing").innerHTML="Yes. (See above)";
-                else
-                    document.getElementById("presensing").innerHTML="No. (See above)";
-                    
                 if(spotcourt[i]=="spot")
                     document.getElementById('selection'+(i+1)).innerHTML+=" <b style='font-size:50px;'>spot</b>";
                 else
                     document.getElementById('selection'+(i+1)).innerHTML+=" <b style='font-size:50px;'>court</b>";
             }
+            
+            if(spotcourt[0]==choice||spotcourt[1]==choice)
+                document.getElementById("presensing").innerHTML="Yes. (See above)";
+            else
+                document.getElementById("presensing").innerHTML="No. (See above)";
         }
         function myopiaCheckHighMedLow(cards,highmedlow,choice)
         {

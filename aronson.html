@@ -970,13 +970,13 @@
         function getSuit(card)
         {
 			if(card.indexOf("spade") != -1)
-				return "&spades;";	
+				return "spades";	
 			if(card.indexOf("heart") != -1)
-				return "&hearts;";	
+				return "hearts";	
 			if(card.indexOf("club") != -1)
-				return "&clubs;";	
+				return "clubs";	
 			if(card.indexOf("diam") != -1)
-				return "&diams;";  
+				return "diams";  
         }
         function getCardVal(card)
 		{
@@ -1018,6 +1018,8 @@
             cards=cards.split(",");
             spotcourt=spotcourt.split(",");
             
+            document.getElementById("subsensing").innerHTML="";
+            
             for(var i=0;i<cards.length;i++)
             {
                 if(spotcourt[i]=="spot")
@@ -1027,29 +1029,48 @@
             }
             
             if(spotcourt[0]==choice||spotcourt[1]==choice)
-                document.getElementById("presensing").innerHTML="Yes. (See above)";
+                document.getElementById("presensing").innerHTML="Yes. (See above)<br>Now I'm sensing a";
             else
-                document.getElementById("presensing").innerHTML="No. (See above)";
+                document.getElementById("presensing").innerHTML="No. (See above)<br>Now I'm sensing a";
+        
+            //reposition buttons since spot and court buttons disappear after selected
+            document.getElementById('high').style.position='relative';
+            document.getElementById('high').style.top='-100px';
+            document.getElementById('med').style.position='relative';
+            document.getElementById('med').style.top='-100px';
+            document.getElementById('low').style.position='relative';
+            document.getElementById('low').style.top='-100px';
+            document.getElementById('selectionanswer1').style.position='relative';
+            document.getElementById('selectionanswer1').style.top='-100px';
+            document.getElementById('selectionanswer2').style.position='relative';
+            document.getElementById('selectionanswer2').style.top='-100px';
+            document.getElementById('myopiaspread').style.position='relative';
+            document.getElementById('myopiaspread').style.top='-100px';
+            document.getElementById('myopiaplayagain').style.position='relative';
+            document.getElementById('myopiaplayagain').style.top='-100px';
+        
         }
         function myopiaCheckHighMedLow(cards,highmedlow,choice)
         {
             cards=cards.split(",");
             highmedlow=highmedlow.split(",");
             
-            document.getElementById("presensing").innerHTML="Nope.<br>";
+            document.getElementById("subsensing").innerHTML="";
+            
+            document.getElementById("presensing").innerHTML="Nope.<br>Now I'm sensing a";
             
             for(var i=0;i<cards.length;i++)
             {
                 if(highmedlow[i]==choice)
                 {
-                    document.getElementById("presensing").innerHTML="Great! (See above)<br>";
+                    document.getElementById("presensing").innerHTML="Great! (See above)<br>Now I'm sensing a";
                     document.getElementById('selection'+(i+1)).innerHTML+=" <b style='font-size:50px;'>("+choice+")</b>";
                     HIGHMEDLOWCOUNTER++;
                 }       
             }
             if(HIGHMEDLOWCOUNTER>=2)
             {
-                document.getElementById("presensing").innerHTML="Great!<br>";
+                document.getElementById("presensing").innerHTML="Great!<br>Now I'm sensing a";
                 document.getElementById("high").style.display="none";
                 document.getElementById("med").style.display="none";
                 document.getElementById("low").style.display="none";
@@ -1061,35 +1082,71 @@
             highmedlow=highmedlow.split(",");
             spotcourt=spotcourt.split(",");
             
-            document.getElementById("presensing").innerHTML+=" Now I'm sensing a <br>";
+            document.getElementById("subsensing").innerHTML+="<br>Now I'm sensing a";
             document.getElementById("sensing").innerHTML+="<input type='button' value='Spot Card' id='spot' onClick='javascript:myopiaCheckSpotCourt(\""+cards+"\",\""+spotcourt+"\",\"spot\");this.style.display=\"none\";document.getElementById(\"court\").style.display=\"none\";' style='font-size:50px;'>&nbsp;";
             document.getElementById("sensing").innerHTML+="<input type='button' value='Court Card' id='court' onClick='javascript:myopiaCheckSpotCourt(\""+cards+"\",\""+spotcourt+"\",\"court\");this.style.display=\"none\";document.getElementById(\"spot\").style.display=\"none\"' style='font-size:50px;'><br>";
             document.getElementById("sensing").innerHTML+="<input type='button' value='High Card' id='high' onClick='javascript:myopiaCheckHighMedLow(\""+cards+"\",\""+highmedlow+"\",\"high\");this.style.display=\"none\"' style='font-size:50px;'>&nbsp;";
             document.getElementById("sensing").innerHTML+="<input type='button' value='Med Card' id='med' onClick='javascript:myopiaCheckHighMedLow(\""+cards+"\",\""+highmedlow+"\",\"med\");this.style.display=\"none\"' style='font-size:50px;'>&nbsp;";
             document.getElementById("sensing").innerHTML+="<input type='button' value='Low Card' id='low' onClick='javascript:myopiaCheckHighMedLow(\""+cards+"\",\""+highmedlow+"\",\"low\");this.style.display=\"none\"' style='font-size:50px;'>";
         }
-        function myopiaCheckSuit(suit,cards,suits,highmedlow,spotcourt)
+        function myopiaCheckSuit(suit,cards,suits,highmedlow,spotcourt,color)
         {
             cards=cards.split(",");
             suits=suits.split(",");
         
             document.getElementById("presensing").innerHTML="";
-            document.getElementById("subsensing").innerHTML="No, try again!"; //default is No, will correct if Yes
+            //document.getElementById("sensing").innerHTML="";
+            document.getElementById("subsensing").innerHTML="No. (See above)"; //default is No, will correct if Yes
         
-            for(var i=0;i<cards.length;i++)
+            //window.alert(suits[0]+" "+suit);
+            //window.alert(suits[1]+" "+suit);
+        
+            if(suit==suits[0]||suit==suits[1])
+                document.getElementById("subsensing").innerHTML="Yes. (See above)"; 
+        
+            if(color=='darkred')
             {
-                if(suits[i]==suit)
+                document.getElementById('hearts').style.display='none';
+                document.getElementById('diams').style.display='none';
+                
+                for(var i=0;i<cards.length;i++)
                 {
-                    document.getElementById('selection'+(i+1)).innerHTML=suit;
-                    document.getElementById("subsensing").innerHTML="Yes! (See above)";
-                    SUITCOUNTER++;
+                    if(suits[i]=='hearts')
+                    {
+                        document.getElementById('selection'+(i+1)).innerHTML='&hearts;';
+                        SUITCOUNTER++;
+                    }
+                    if(suits[i]=='diams')
+                    {
+                        document.getElementById('selection'+(i+1)).innerHTML='&diams;';
+                        SUITCOUNTER++;
+                    }
                 }
             }
-            
+            if(color=='black')
+            {
+                document.getElementById('spades').style.display='none';
+                document.getElementById('clubs').style.display='none';
+                
+                for(var i=0;i<cards.length;i++)
+                {
+                    if(suits[i]=='spades')
+                    {
+                        document.getElementById('selection'+(i+1)).innerHTML='&spades;';
+                        SUITCOUNTER++;
+                    }
+                    if(suits[i]=='clubs')
+                    {
+                        document.getElementById('selection'+(i+1)).innerHTML='&clubs;'; 
+                        SUITCOUNTER++;
+                    }
+                }
+            }
+         
             if(SUITCOUNTER>=2)
             {
-                document.getElementById("presensing").innerHTML="Great!";
-                document.getElementById("sensing").innerHTML="";
+                //document.getElementById("presensing").innerHTML="Great!";
+                //document.getElementById("sensing").innerHTML="";
                 myopiaHighMedLowDisplay(cards,highmedlow,spotcourt);
                 SUITCOUNTER=0;
             }
@@ -1102,13 +1159,13 @@
             
             if(colors[0]=="darkred"||colors[1]=="darkred")
             {            
-                sensing.innerHTML+="<input type='button' value='&hearts;' onClick='myopiaCheckSuit(\"&hearts;\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");this.style.display=\"none\";' style='font-size:100px;color:darkred;'>&nbsp;";
-                sensing.innerHTML+="<input type='button' value='&diams;' onClick='myopiaCheckSuit(\"&diams;\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");this.style.display=\"none\";' style='font-size:100px;color:darkred;'>&nbsp;";
+                sensing.innerHTML+="<input type='button' value='&hearts;' id='hearts' onClick='myopiaCheckSuit(\"hearts\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\",\"darkred\");this.style.display=\"none\";' style='font-size:100px;color:darkred;'>&nbsp;";
+                sensing.innerHTML+="<input type='button' value='&diams;' id='diams' onClick='myopiaCheckSuit(\"diams\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\",\"darkred\");this.style.display=\"none\";' style='font-size:100px;color:darkred;'>&nbsp;";
             }
             if(colors[0]=="black"||colors[1]=="black")
             {  
-                sensing.innerHTML+="<input type='button' value='&spades;' onClick='myopiaCheckSuit(\"&spades;\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");this.style.display=\"none\";' style='font-size:100px;'>&nbsp;";
-                sensing.innerHTML+="<input type='button' value='&clubs;' onClick='myopiaCheckSuit(\"&clubs;\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");this.style.display=\"none\";' style='font-size:100px;'>&nbsp;";
+                sensing.innerHTML+="<input type='button' value='&spades;' id='spades' onClick='myopiaCheckSuit(\"spades\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\",\"black\");this.style.display=\"none\";' style='font-size:100px;'>&nbsp;";
+                sensing.innerHTML+="<input type='button' value='&clubs;' id='clubs' onClick='myopiaCheckSuit(\"clubs\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\",\"black\");this.style.display=\"none\";' style='font-size:100px;'>&nbsp;";
             }
         }
         function myopiaColorDisplay(chosenColor,cards,colors,suits,highmedlow,spotcourt)
@@ -1159,10 +1216,10 @@
             }
             
             mainpage.innerHTML+="<br><b id='presensing' style='color:darkgreen;'>I'm sensing a </b><b style='color:darkgreen;' id='sensing'><input type='button' value='Red' onClick='javascript:myopiaColorDisplay(\"darkred\",\""+cards+"\",\""+colors+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");' style='font-size:70px;'> or <input type='button' value='Black' onClick='javascript:myopiaColorDisplay(\"black\",\""+cards+"\",\""+colors+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");' style='font-size:70px;'> card...</b><br>";
-            mainpage.innerHTML+="<input type='button' value='Selection 1 Answer' onClick='javascript:showSelection(\""+1+"\",\""+cards[0]+"\",\""+colors[0]+"\");' style='font-size:50px;'>&nbsp;";
-            mainpage.innerHTML+="<input type='button' value='Selection 2 Answer' onClick='javascript:showSelection(\""+2+"\",\""+cards[1]+"\",\""+colors[1]+"\");' style='font-size:50px;'>&nbsp;";
-            mainpage.innerHTML+="<input type='button' value='Show Spread' onClick='javascript:returnSpread(\""+estID+"\")' style='font-size:50px;'>";
-            mainpage.innerHTML+="<br><input type='button' value='Play Again' onClick='myopia();' style='font-size:50px;'><br>";
+            mainpage.innerHTML+="<input type='button' value='Selection 1 Answer' id='selectionanswer1' onClick='javascript:showSelection(\""+2+"\",\""+cards[1]+"\",\""+colors[1]+"\");' style='font-size:50px;'>&nbsp;";
+            mainpage.innerHTML+="<input type='button' value='Selection 2 Answer' id='selectionanswer2' onClick='javascript:showSelection(\""+1+"\",\""+cards[0]+"\",\""+colors[0]+"\");' style='font-size:50px;'>&nbsp;";
+            mainpage.innerHTML+="<input type='button' value='Show Spread' id='myopiaspread' onClick='javascript:returnSpread(\""+estID+"\")' style='font-size:50px;'>";
+            mainpage.innerHTML+="<br><input type='button' value='Play Again' id='myopiaplayagain' onClick='myopia();' style='font-size:50px;'><br>";
        
         }
         function hideEsts()
@@ -1228,7 +1285,7 @@
           showDiv("myopia"); 
           var mainpage=document.getElementById('myopiamain');
           mainpage.innerHTML="<b style='font-size:80px;color:gray;'>Two adjacent cards are selected</b><br><br>"
-          mainpage.innerHTML+="<b id='selection1' style='color:darkgreen;' class='myopia'>?</b>&nbsp;<b id='selection2' style='color:darkgreen;' class='myopia'>?</b><br><br>";
+          mainpage.innerHTML+="<b id='selection2' style='color:darkgreen;' class='myopia'>?</b>&nbsp;<b id='selection1' style='color:darkgreen;' class='myopia'>?</b><br><br>";
           mainpage.innerHTML+="<b style='font-size:80px;color:gray;'>Cut Estimate:</b></b>&nbsp;<b id='estAns' style='font-size:80px;color:gray;'></b><br>";
         
           for(var i=5;i<50;i+=5)

@@ -1216,8 +1216,8 @@
             }
             
             mainpage.innerHTML+="<br><b id='presensing' style='color:darkgreen;'>I'm sensing a </b><b style='color:darkgreen;' id='sensing'><input type='button' value='Red' onClick='javascript:myopiaColorDisplay(\"darkred\",\""+cards+"\",\""+colors+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");' style='font-size:70px;'> or <input type='button' value='Black' onClick='javascript:myopiaColorDisplay(\"black\",\""+cards+"\",\""+colors+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");' style='font-size:70px;'> card...</b><br>";
-            mainpage.innerHTML+="<input type='button' value='Selection 1 Answer' id='selectionanswer1' onClick='javascript:showSelection(\""+2+"\",\""+cards[1]+"\",\""+colors[1]+"\");' style='font-size:50px;'>&nbsp;";
-            mainpage.innerHTML+="<input type='button' value='Selection 2 Answer' id='selectionanswer2' onClick='javascript:showSelection(\""+1+"\",\""+cards[0]+"\",\""+colors[0]+"\");' style='font-size:50px;'>&nbsp;";
+            mainpage.innerHTML+="<input type='button' value='Card Left Answer' id='selectionanswer1' onClick='javascript:showSelection(\""+2+"\",\""+cards[1]+"\",\""+colors[1]+"\");' style='font-size:50px;'>&nbsp;";
+            mainpage.innerHTML+="<input type='button' value='Card Right Answer' id='selectionanswer2' onClick='javascript:showSelection(\""+1+"\",\""+cards[0]+"\",\""+colors[0]+"\");' style='font-size:50px;'>&nbsp;";
             mainpage.innerHTML+="<input type='button' value='Show Spread' id='myopiaspread' onClick='javascript:returnSpread(\""+estID+"\")' style='font-size:50px;'>";
             mainpage.innerHTML+="<br><input type='button' value='Play Again' id='myopiaplayagain' onClick='myopia();' style='font-size:50px;'><br>";
        
@@ -1234,8 +1234,8 @@
                max;
            var estimate=document.getElementById('est'+estID).value;
            estimate=parseInt(estimate);
-           min=(estimate-5);
-           max=(estimate+5);
+           min=(estimate-3);
+           max=(estimate+2);
 
            showDeck(min,max);
         }
@@ -1248,8 +1248,8 @@
 
            var estimate=document.getElementById('est'+estID).value;
            estimate=parseInt(estimate);
-           min=(estimate-5);
-           max=(estimate+5);
+           min=(estimate-3);
+           max=(estimate+2);
            
            pos=getRand(min,max-1);
            pos2=pos+1;

@@ -192,6 +192,7 @@
 		}
 		var showDeck=function(min,max,IDNo)
 		{
+			 window.scrollTo(0,0);
 			 var spreadcount=1;
 			 document.getElementById(IDNo).style.color="darkgreen";
 			 if(IDNo=="alert")
@@ -916,7 +917,7 @@
 	<span id="distance"></span>
 	<br><br>
 	<tt class="note">* = Natural</tt>
-	<span id="alert" onClick="javascript:this.style.visibility='hidden';"></span>
-	<span id="alert2" onClick="javascript:this.style.visibility='hidden';"></span>
+	<span id="alert" onClick="javascript:this.style.visibility='hidden';window.scrollTo(0,0);"></span>
+	<span id="alert2" onClick="javascript:this.style.visibility='hidden';window.scrollTo(0,0);"></span>
 	</body>
 </html>

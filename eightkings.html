@@ -195,7 +195,7 @@
 			 window.scrollTo(0,0);
 			 var spreadcount=1;
 			 document.getElementById(IDNo).style.color="darkgreen";
-			 if(IDNo=="alert")
+			 if(IDNo=="alert1")
 			     document.getElementById(IDNo).innerHTML="<br><br><br>Current Spread: <br><br>|";
 			 
 			 if(STATE==="UP") // if deck currently face-up (display in reverse)
@@ -204,7 +204,7 @@
 					color=(isRed(DECK[i]))?"darkred":"black";
 					document.getElementById(IDNo).style.color="gray";
 					document.getElementById(IDNo).innerHTML+="<i style='color:"+color+";font-size:80px;'>"+DECK[i]+"</i>";
-					if(((spreadcount==13) || (spreadcount==26) || (spreadcount==39)) && (IDNo=="alert"))
+					if(((spreadcount==13) || (spreadcount==26) || (spreadcount==39)) && (IDNo=="alert1"))
 						document.getElementById(IDNo).innerHTML+="|&nbsp;<tt style='font-size:30px;color:black;'>--&gt;</tt><br><tt style='font-size:30px;color:black;'>...</tt>";
 					document.getElementById(IDNo).innerHTML+="|"
 					spreadcount++;
@@ -217,13 +217,13 @@
 					color=(isRed(DECK[i]))?"darkred":"black";
 					document.getElementById(IDNo).style.color="gray";
 					document.getElementById(IDNo).innerHTML+="<i style='color:"+color+";font-size:80px;'>"+DECK[i]+"</i>";
-					if(((spreadcount==13) || (spreadcount==26) || (spreadcount==39)) && (IDNo=="alert"))
+					if(((spreadcount==13) || (spreadcount==26) || (spreadcount==39)) && (IDNo=="alert1"))
 						document.getElementById(IDNo).innerHTML+="|&nbsp;<tt style='font-size:30px;color:black;'>--&gt;</tt><br><tt style='font-size:30px;color:black;'>...</tt>";
 					document.getElementById(IDNo).innerHTML+="|"
 					spreadcount++;
 				 }
 			 }
-			 if(IDNo=="alert")
+			 if(IDNo=="alert1")
 			     document.getElementById(IDNo).innerHTML+=TAP_OR_CLICK;
 			     
 			 document.getElementById(IDNo).style.visibility="visible";
@@ -244,13 +244,13 @@
 					['RANDOM',1,52]];
 				var cutsizerows=8;
 				var cutsizecols=3;
-				document.getElementById('alert').innerHTML="<br><br><b style='font-size:100px;'>Cut Off: </b><br><br>";
+				document.getElementById('alert1').innerHTML="<br><br><b style='font-size:100px;'>Cut Off: </b><br><br>";
 				for(var i=0;i<cutsizerows;i++)
 				{
-					document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='"+cutsize[i][0]+"' class='cutsize' onClick='javascript:cutOff("+cutsize[i][1]+","+cutsize[i][2]+");'>";
+					document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='"+cutsize[i][0]+"' class='cutsize' onClick='javascript:cutOff("+cutsize[i][1]+","+cutsize[i][2]+");'>";
 				}
-				document.getElementById('alert').innerHTML+=TAP_OR_CLICK;
-				document.getElementById('alert').style.visibility="visible";
+				document.getElementById('alert1').innerHTML+=TAP_OR_CLICK;
+				document.getElementById('alert1').style.visibility="visible";
 				document.getElementById('guess').style.display='none'; // Hide guess
 				
 				if(STATE==="UP")
@@ -291,7 +291,7 @@
 			var smaller=larger=0;
 			if(ge(POS,POS2)){larger=POS;smaller=POS2;}else{larger=POS2;smaller=POS;}
 			document.getElementById('distance').style.display='block';
-			document.getElementById('distance').innerHTML+="<input type='button' value='Show Spread!' onClick='javascript:showDeck("+smaller+","+(larger-1)+",\"alert\");' style='font-size:100px;cursor:pointer;' >";
+			document.getElementById('distance').innerHTML+="<input type='button' value='Show Spread!' onClick='javascript:showDeck("+smaller+","+(larger-1)+",\"alert1\");' style='font-size:100px;cursor:pointer;' >";
 		}
 		var showSpecGuessButton=function()
 		{
@@ -395,19 +395,19 @@
 		var showPos2=function(){document.getElementById('cutcard').innerHTML="<br>Cut Card: <b>"+CARD2+NAT+" = "+POS2+"<br><tt class='bottomcount' style='font-size:45px;'>(^ From Bottom = "+(DECK.length-POS2+1)+")</tt></b><br>";}
 		var preCutDeck=function()
 		{
-			document.getElementById('alert').innerHTML="<br><br><b style='color:darkgreen;'>Cut Top to Bottom:</b><br><br>";
+			document.getElementById('alert1').innerHTML="<br><br><b style='color:darkgreen;'>Cut Top to Bottom:</b><br><br>";
 			for(var i=1;i<DECK.length;i++)
-				document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:cutDeck("+i+");hideDivs();'>";
+				document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:cutDeck("+i+");hideDivs();'>";
 
-			document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
+			document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
 			
-			document.getElementById('alert').innerHTML+="<br><br><b style='color:darkgreen;'>Cut Bottom to Top:</b><br><br>";
+			document.getElementById('alert1').innerHTML+="<br><br><b style='color:darkgreen;'>Cut Bottom to Top:</b><br><br>";
 			for(var i=1;i<DECK.length;i++)
-				document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:DECK.reverse();cutDeck("+i+");DECK.reverse();hideDivs();'>";
+				document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='&nbsp;"+i+"&nbsp;' class='cutsize' onClick='javascript:DECK.reverse();cutDeck("+i+");DECK.reverse();hideDivs();'>";
 
-			document.getElementById('alert').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
-			document.getElementById('alert').innerHTML+=TAP_OR_CLICK;
-			document.getElementById('alert').style.visibility="visible";
+			document.getElementById('alert1').innerHTML+="&nbsp;<input type='button' value='RANDOM' class='cutsize' onClick='javascript:cutDeck(getRand(1,52));hideDivs();'>";
+			document.getElementById('alert1').innerHTML+=TAP_OR_CLICK;
+			document.getElementById('alert1').style.visibility="visible";
 		}
 		var cutDeck=function(mid) // A Full/Complete Cut (cut and carry)
 		{
@@ -428,9 +428,9 @@
 			DECK=rhalf.concat(lhalf); // DECK = rhalf + lhalf  (the cut)
 			//alert("New Order After Cut: "+DECK);
 			//alert("The deck has been cut and completed. You may want to glimpse the bottom card.");
-			 document.getElementById('alert').style.color="darkgreen";
-			 document.getElementById('alert').innerHTML="<br><br><br><br>The Deck has been cut!<br><br>(You may want to glimpse the bottom card)"+TAP_OR_CLICK;
-			 document.getElementById('alert').style.visibility="visible";
+			 document.getElementById('alert1').style.color="darkgreen";
+			 document.getElementById('alert1').innerHTML="<br><br><br><br>The Deck has been cut!<br><br>(You may want to glimpse the bottom card)"+TAP_OR_CLICK;
+			 document.getElementById('alert1').style.visibility="visible";
 		}
 		var showBottomCard=function()
 		{
@@ -444,9 +444,9 @@
 		}
 		var showThisCard=function(card,msg)
 		{
-			 document.getElementById('alert').style.color=(isRed(card))?"darkred":"black";
-			 document.getElementById('alert').innerHTML="<br><br><br><br>"+msg+card+TAP_OR_CLICK;
-			 document.getElementById('alert').style.visibility="visible";
+			 document.getElementById('alert1').style.color=(isRed(card))?"darkred":"black";
+			 document.getElementById('alert1').innerHTML="<br><br><br><br>"+msg+card+TAP_OR_CLICK;
+			 document.getElementById('alert1').style.visibility="visible";
 		}
 		function isRed(card)
 		{
@@ -460,6 +460,10 @@
 		{
 			return (x >= y)?true:false;
 		}
+		function shuffle(array)
+		{
+            return array.sort(() => Math.random() - 0.5);
+        }
 		function getRand(min,max)
 		{
 			return Math.floor((Math.random())*(max-min))+min;
@@ -689,9 +693,9 @@
 		function guessGroup(gtype)
 		{
 			
-			document.getElementById('alert').innerHTML='<h1>Choose a '+gtype+':</h1>';
-			document.getElementById('alert').style.color='black';
-			document.getElementById('alert').style.visibility='visible';			
+			document.getElementById('alert1').innerHTML='<h1>Choose a '+gtype+':</h1>';
+			document.getElementById('alert1').style.color='black';
+			document.getElementById('alert1').style.visibility='visible';			
 			
 			// Four of a Kind or Suit..? set max
 			var maxg=(gtype.indexOf("Four") == -1)?13:4;
@@ -703,7 +707,7 @@
 				for(var x=1;x<=13;x++)
 				{
 					y=(x==1)?'A':(x==11)?'J':(x==12)?'Q':(x==13)?'K':x;
-					document.getElementById('alert').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
+					document.getElementById('alert1').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
 				}
 			}
 			else
@@ -711,7 +715,7 @@
 				for(var x=1;x<=4;x++)
 				{
 					y=(x==1)?'clubs':(x==2)?'hearts':(x==3)?'spades':(x==4)?'diams':x;
-					document.getElementById('alert').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
+					document.getElementById('alert1').innerHTML+='<input type="button" style="font-size:100px;" value="&nbsp;'+y+'&nbsp;" onclick="javascript:valG(this.value);document.getElementById(\'alert2\').style.visibility=\'visible\'">&nbsp;';
 				
 				}
 			}
@@ -735,6 +739,690 @@
 				}
 			document.getElementById('alert2').innerHTML+=values;
 			document.getElementById('alert2').innerHTML+=TAP_OR_CLICK;
+		}
+		function nextCardAnswer(nextcard,isred)
+		{
+			var alert=document.getElementById('alert3');
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
+			alert.innerHTML+="<b id='nextCard02' style='font-size:200px;'>"+nextcard+"</b><br>";
+			document.getElementById('nextCard02').style.color=(isred)?"darkred":"black";
+			alert.innerHTML+="<input type='button' value='Play Again' onClick='javascript:nextCard();' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function nextCard()
+		{
+			var alert=document.getElementById('alert2');
+			var pos=getRand(1,DECK.length-1);
+			var card=getCard(pos); //returns card at pos -1
+			var nextcard=DECK[pos];
+			
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>What's the next card?</b><br>";
+			alert.innerHTML+="<b id='nextCard01' style='font-size:200px;'>"+card+"</b><br>";
+			document.getElementById('nextCard01').style.color=(isRed(card))?"darkred":"black";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:nextCardAnswer(\""+nextcard+"\","+isRed(nextcard)+");' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function whichCardsAnswer(cards,answerpos,colors)
+		{
+			var alert=document.getElementById('alert3');
+			var answerpos=answerpos.split(","); //passed as string, need array
+			var cards=cards.split(","); //passed as string, need array
+			var colors=colors.split(","); //passed as string, need array
+			
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
+			for(var i=0;i<answerpos.length;i++)
+			{
+			    alert.innerHTML+="<b style='color:"+colors[i]+"'>"+cards[answerpos[i]];
+			    if(i!=answerpos.length-1)
+			       alert.innerHTML+=", "; 
+			}
+			alert.innerHTML+="<br><input type='button' value='Play Again' onClick='javascript:whichCards();' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function whichCards()
+		{
+			var alert=document.getElementById('alert2');
+			var pos=getRand(1,DECK.length-5); //
+			var cards=[], 
+			    answerpos=[], //positions of the answers
+			    colors=[];    //cards color
+			var max=3, counter=0;
+			
+			for(var i=0;i<5;i++)
+			    cards.push(getCard(pos+i)); //returns card at pos - 1
+			
+		    
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Which cards are missing?</b><br>";
+			
+			for(var i=0;i<5;i++)
+			{
+				var X=getRand(-1,1);//get a true or false value at random
+				var cardcolor=(isRed(cards[i]))?"darkred":"black";
+				if(i==4&&counter==0)//no X's so set one
+				    X=1;
+				if(counter<max&&X)
+				{
+					alert.innerHTML+="<b>x</b>";
+					answerpos.push(i);
+					colors.push(cardcolor);
+				    counter++;
+				}
+				else
+				{
+				    alert.innerHTML+="<b id='card'"+i+" style='color:"+cardcolor+"'>"+cards[i]+"</b>";
+				}
+				alert.innerHTML+="<b style='color:gray;'>|</b>";
+			}
+			alert.innerHTML+="<br>";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:whichCardsAnswer(\""+cards+"\",\""+answerpos+"\",\""+colors+"\");' style='font-size:50px;'>";
+		    alert.innerHTML+="<br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function spotTheLieAnswer(truth,lie,colors,mix,cards,cardcolors,liePos)
+		{
+			var alert=document.getElementById('alert3');
+			var colors=colors.split(","), //passed as string, need array
+			    cards=cards.split(","), //passed as string, need array
+			    cardcolors=cardcolors.split(","); //passed as string, need array
+			   
+			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
+			for(var i=0;i<3;i++)
+			{
+				if(i==liePos)
+					alert.innerHTML+="<b style='color:"+colors[1]+";font-size:50px;' class='circle'>"+lie+"</b>";
+				else
+				    alert.innerHTML+="<b style='color:"+cardcolors[i]+";font-size:50px;'>"+cards[i]+"</b>";
+				alert.innerHTML+="<b style='color:gray;font-size:50px;'>|</b>";
+			}
+			alert.style.visibility="visible";
+			alert.innerHTML+="<br><b style='color:black'>Lie: </b><b style='color:"+colors[1]+"'>"+lie+"</b><br>";
+			alert.innerHTML+="<b style='color:black'>Truth: </b><b style='color:"+colors[0]+"'>"+truth+"</b><br>";
+			alert.innerHTML+="<input type='button' value='Play Again' onClick='javascript:spotTheLie("+mix+");' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function repaintSpotTheLie(mix,peek,pos,pos2,liePos,cards,colors,cardcolors,peekcolor)
+		{
+			var alert=document.getElementById('alert4'),
+			    lie,//the card that is incorrect
+			    truth,
+			    pad="";
+			    
+			cards=cards.split(","); 
+			colors=colors.split(",");
+			cardcolors=cardcolors.split(",");
+			    
+			pad="<b style='color:gray;font-size:80px;'>(Cards Mixed)</b><br>";
+			
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Spot the Lie and Correct it!</b><br>"+pad;
+			
+			lie=DECK[pos2];
+			var liecolor=colors[1];
+			
+			for(var i=0;i<3;i++)
+			{
+				if(i==liePos)
+				{
+					
+					alert.innerHTML+="<b style='color:"+liecolor+"'>"+lie+"</b>";
+					truth=cards[liePos];
+				}
+				else
+				{
+				    alert.innerHTML+="<b style='color:"+cardcolors[i]+"'>"+cards[i]+"</b>";
+				}
+				alert.innerHTML+="<b style='color:gray;'>|</b>";
+			}
+			alert.innerHTML+="<br>";
+			alert.innerHTML+="<b style='font-size:60px'>Previous Card: </b><b style='color:"+peekcolor+";font-size:60px'>"+peek+"</b><br>";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\",\""+mix+"\",\""+cards+"\",\""+cardcolors+"\",\""+liePos+"\");' style='font-size:50px;'>";
+		    alert.innerHTML+="<br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function spotTheLie(mix)
+		{
+			var alert=document.getElementById('alert2'),
+			    pos=getRand(1,DECK.length-3), //random number for position in deck for spread
+			    pos2=getRand(1,DECK.length-3), //random number for position in deck for lie
+			    cards=[], //spread of cards
+			    colors=[],    //card color pos 0 = truth, 1 = lie
+			    cardcolors=[],//color of cards array
+			    liePos=getRand(0,3),//get card position to lie on
+			    lie,//the card that is incorrect
+			    truth,
+			    pad="",
+			    peek,
+			    peekcolor;
+			    
+
+			
+			for(var i=0;i<3;i++)
+			    cards.push(getCard(pos+i)); //returns card at pos - 1
+                
+            if(mix)
+			{
+			    cards=shuffle(cards);
+			    pad="<b style='color:gray;font-size:80px;'>(Cards Mixed)</b><br>";
+			}
+                
+            var nomatch=0;
+			while(nomatch<3)
+			{
+			    for(var i=0;i<3;i++)
+			    {
+			        if(cards[i]==DECK[pos2]) //check for duplicates
+			        {
+			    		//window.alert("Duplicates!");
+			            pos2=getRand(1,DECK.length-3); //if duplicate get another random pos
+                        nomatch=0; //reset
+			        }
+                    else
+                    {
+                        nomatch++;
+                    }
+			    }
+		    }
+		    
+		    peek=(pos-1<=0)?DECK[DECK.length-1]:getCard(pos-1); //set peeked card (prev card to spread)
+		    peekcolor=(isRed(peek))?"darkred":"black";
+		    
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Spot the Lie and Correct it!</b><br>"+pad;
+			
+			lie=DECK[pos2];
+			var liecolor=(isRed(lie))?"darkred":"black";
+			
+			for(var i=0;i<3;i++)
+			{
+				var cardcolor=(isRed(cards[i]))?"darkred":"black";
+				
+				if(i==liePos)
+				{
+					
+					alert.innerHTML+="<b style='color:"+liecolor+"'>"+lie+"</b>";
+					cardcolors.push(cardcolor);
+					colors.push(cardcolor);
+					colors.push(liecolor);
+					truth=cards[liePos];
+				}
+				else
+				{
+				    alert.innerHTML+="<b style='color:"+cardcolor+"'>"+cards[i]+"</b>";
+				    cardcolors.push(cardcolor);
+				}
+				alert.innerHTML+="<b style='color:gray;'>|</b>";
+			}
+			alert.innerHTML+="<br>";
+			if(mix)
+			    alert.innerHTML+="<input type='button' style='font-size:50px;' value='Peek previous card' onClick='repaintSpotTheLie(\""+mix+"\",\""+peek+"\",\""+pos+"\",\""+pos2+"\",\""+liePos+"\",\""+cards+"\",\""+colors+"\",\""+cardcolors+"\",\""+peekcolor+"\")'><br>";
+			alert.innerHTML+="<input type='button' value='Answer' onClick='javascript:spotTheLieAnswer(\""+truth+"\",\""+lie+"\",\""+colors+"\",\""+mix+"\",\""+cards+"\",\""+cardcolors+"\",\""+liePos+"\");' style='font-size:50px;'>";
+		    alert.innerHTML+="<br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function cardsAndNumbersAnswer(answers,answercolors)
+		{
+			var alert=document.getElementById('alert3'),
+			answers=answers.split(","),
+			answercolors=answercolors.split(",");
+			
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Answer:</b><br>";
+			
+			//Display Answers (Cards and Numbers)
+			for(var i=0;i<3;i++)
+			{
+			    alert.innerHTML+="<b style='color:"+answercolors[i]+"'>"+answers[i]+"</b>";
+			    if(i!=2)
+			        alert.innerHTML+="<b>, </b>";
+			}
+			
+			alert.innerHTML+="<br><input type='button' value='Play Again' onClick='javascript:cardsAndNumbers();' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function cardsAndNumbers()
+		{
+			var alert=document.getElementById('alert2'),
+			    questions=[], //cards and numbers
+			    colors=[],//colors of cards and numbers
+			    pos=[], //card positions
+			    answers=[], //answers to questions
+			    answercolors=[]; //answer colors
+			    
+			alert.style.visibility="visible";
+			alert.innerHTML="<br><br><br><b>Name the Cards and Numbers!</b><br>";
+			
+			var last=""; //track is last was a card or number
+			
+			//get 3 random values
+			pos.push(getRand(1,17));
+			pos.push(getRand(18,35));
+			pos.push(getRand(36,DECK.length));
+			
+			pos=shuffle(pos);
+			
+			for(var i=0;i<3;i++)
+			{
+				var X=getRand(-1,1);//get a true or false value at random
+				
+				//Reduce the chance of getting all of the same        
+				if(last==X)
+				    X=getRand(-1,1);
+				    
+				var color;
+				
+				if(X)
+				{
+					//Card
+			        questions.push(getCard(pos[i])); //returns card at pos - 1
+			        color=(isRed(questions[i]))?"darkred":"black";
+			        colors.push(color);
+			        answers.push(pos[i]);
+			        answercolors.push("black");
+			    }
+			    else
+			    {
+					//Number
+			        questions.push(pos[i]); //returns card at pos - 1
+			        color=(isRed(getCard(questions[i])))?"darkred":"black";
+			        colors.push("black");
+			        answers.push(getCard(pos[i]));
+			        answercolors.push(color);
+				}
+				last=X;
+			}
+	 
+			//Display Questions (Cards and Numbers)
+			for(var i=0;i<3;i++)
+			{
+			    alert.innerHTML+="<b style='color:"+colors[i]+"'>"+questions[i]+"</b>";
+			    if(i!=2)
+			        alert.innerHTML+="<b>, </b>";
+			}
+			
+			alert.innerHTML+="<br><input type='button' value='Answer' onClick='javascript:cardsAndNumbersAnswer(\""+answers+"\",\""+answercolors+"\");' style='font-size:50px;'>";	
+			alert.innerHTML+="<br>";
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+		function orderIt(direction,pos,IDNo)
+		{
+			var alert=document.getElementById('alert'+IDNo),
+			    card=DECK[pos];
+			
+			alert.style.visibility="visible";
+			alert.style.color="darkgreen";
+			alert.innerHTML="<b style='font-size:50px;color:gray;'>Order it! "+direction+"</b>";
+			if(pos!=DECK.length&&pos!=-1)
+			{
+				var color=(isRed(card))?"darkred":"black";
+			    alert.innerHTML+="<br><br><b>Name the next card!</b><br>";
+			    alert.innerHTML+="<b style='color:"+color+";font-size:200px;'>"+card+"</b>";
+			    
+			    if(direction=="forward")
+			        pos++;
+			    else if(direction=="backward")
+					pos--;
+                IDNo++;
+			    alert.innerHTML+="<br><input type='button' value='Next ->' onClick='javscript:orderIt(\""+direction+"\",\""+pos+"\",\""+IDNo+"\")' style='font-size:50px;'>";
+			}
+			else
+			{
+				alert.innerHTML+="<br><br><b>Great Job!</b><br>";
+			}
+			
+			
+			
+			alert.innerHTML+=TAP_OR_CLICK;
+		}
+        /*function getSuit(card)
+        {
+			if(card.indexOf("spade") != -1)
+				return "spades";	
+			if(card.indexOf("heart") != -1)
+				return "hearts";	
+			if(card.indexOf("club") != -1)
+				return "clubs";	
+			if(card.indexOf("diam") != -1)
+				return "diams";  
+        }*/
+        /*function getCardVal(card)
+		{
+			// Returns an integer that represents the card value
+			var val="";
+			switch(card.substring(0,1))
+			{
+				case "J": val=11; break;
+				case "Q": val=12; break;
+				case "K": val=13; break;
+				case "A": val=1; break;
+				case "1": val=10; break;
+				default: val=card.substring(0,1);
+			}
+			return val;
+		}*/
+        /*function getHighMedLow(card)
+        {
+            var val=getCardVal(card);
+            
+            if(val>1&&val<7)
+                return "low";
+            if(val>=7&&val<10)
+                return "med";
+            if(val>=10||val==1)
+                return "high"
+        }
+        function getSpotCourt(card)
+        {
+            var val=getCardVal(card);
+            
+            if(val>10)
+                return "court";
+            else
+                return "spot";
+        }
+        function myopiaCheckSpotCourt(cards,spotcourt,choice)
+        {
+            cards=cards.split(",");
+            spotcourt=spotcourt.split(",");
+            
+            document.getElementById("subsensing").innerHTML="";
+            
+            for(var i=0;i<cards.length;i++)
+            {
+                if(spotcourt[i]=="spot")
+                    document.getElementById('selection'+(i+1)).innerHTML+=" <b style='font-size:50px;'>spot</b>";
+                else
+                    document.getElementById('selection'+(i+1)).innerHTML+=" <b style='font-size:50px;'>court</b>";
+            }
+            
+            if(spotcourt[0]==choice||spotcourt[1]==choice)
+                document.getElementById("presensing").innerHTML="Yes. (See above)<br>Now I'm sensing a";
+            else
+                document.getElementById("presensing").innerHTML="No. (See above)<br>Now I'm sensing a";
+        
+            //reposition buttons since spot and court buttons disappear after selected
+            document.getElementById('high').style.position='relative';
+            document.getElementById('high').style.top='-100px';
+            document.getElementById('med').style.position='relative';
+            document.getElementById('med').style.top='-100px';
+            document.getElementById('low').style.position='relative';
+            document.getElementById('low').style.top='-100px';
+            document.getElementById('selectionanswer1').style.top='-300px';
+            document.getElementById('selectionanswer2').style.top='-300px';
+            document.getElementById('myopiaspread').style.top='-300px';
+            document.getElementById('myopiaplayagain').style.top='-300px';
+        
+        }
+        function myopiaCheckHighMedLow(cards,highmedlow,choice)
+        {
+            cards=cards.split(",");
+            highmedlow=highmedlow.split(",");
+            
+            document.getElementById("subsensing").innerHTML="";
+            
+            document.getElementById("presensing").innerHTML="Nope.<br>Now I'm sensing a";
+            
+            for(var i=0;i<cards.length;i++)
+            {
+                if(highmedlow[i]==choice)
+                {
+                    document.getElementById("presensing").innerHTML="Great! (See above)<br>Now I'm sensing a";
+                    document.getElementById('selection'+(i+1)).innerHTML+=" <b style='font-size:50px;'>("+choice+")</b>";
+                    HIGHMEDLOWCOUNTER++;
+                }       
+            }
+            if(HIGHMEDLOWCOUNTER>=2)
+            {
+                document.getElementById("presensing").innerHTML="Great!<br>Now I'm sensing a";
+                document.getElementById("high").style.display="none";
+                document.getElementById("med").style.display="none";
+                document.getElementById("low").style.display="none";
+                HIGHMEDLOWCOUNTER=0;
+                
+                document.getElementById('selectionanswer1').style.top='-300px';
+                document.getElementById('selectionanswer2').style.top='-300px';
+                document.getElementById('myopiaspread').style.top='-300px';
+                document.getElementById('myopiaplayagain').style.top='-300px';
+            }
+        }
+        function myopiaHighMedLowDisplay(cards,highmedlow,spotcourt)
+        {
+            highmedlow=highmedlow.split(",");
+            spotcourt=spotcourt.split(",");
+            
+            document.getElementById("subsensing").innerHTML+="<br>Now I'm sensing a";
+            document.getElementById("sensing").innerHTML+="<input type='button' value='Spot Card' id='spot' onClick='javascript:myopiaCheckSpotCourt(\""+cards+"\",\""+spotcourt+"\",\"spot\");this.style.display=\"none\";document.getElementById(\"court\").style.display=\"none\";' style='font-size:50px;'>&nbsp;";
+            document.getElementById("sensing").innerHTML+="<input type='button' value='Court Card' id='court' onClick='javascript:myopiaCheckSpotCourt(\""+cards+"\",\""+spotcourt+"\",\"court\");this.style.display=\"none\";document.getElementById(\"spot\").style.display=\"none\"' style='font-size:50px;'><br>";
+            document.getElementById("sensing").innerHTML+="<input type='button' value='High Card' id='high' onClick='javascript:myopiaCheckHighMedLow(\""+cards+"\",\""+highmedlow+"\",\"high\");this.style.display=\"none\"' style='font-size:50px;'>&nbsp;";
+            document.getElementById("sensing").innerHTML+="<input type='button' value='Med Card' id='med' onClick='javascript:myopiaCheckHighMedLow(\""+cards+"\",\""+highmedlow+"\",\"med\");this.style.display=\"none\"' style='font-size:50px;'>&nbsp;";
+            document.getElementById("sensing").innerHTML+="<input type='button' value='Low Card' id='low' onClick='javascript:myopiaCheckHighMedLow(\""+cards+"\",\""+highmedlow+"\",\"low\");this.style.display=\"none\"' style='font-size:50px;'>";
+        }
+        function myopiaCheckSuit(suit,cards,suits,highmedlow,spotcourt,color)
+        {
+            cards=cards.split(",");
+            suits=suits.split(",");
+        
+            document.getElementById("presensing").innerHTML="";
+            //document.getElementById("sensing").innerHTML="";
+            document.getElementById("subsensing").innerHTML="No. (See above)"; //default is No, will correct if Yes
+        
+            //window.alert(suits[0]+" "+suit);
+            //window.alert(suits[1]+" "+suit);
+        
+            if(suit==suits[0]||suit==suits[1])
+                document.getElementById("subsensing").innerHTML="Yes. (See above)"; 
+        
+            if(color=='darkred')
+            {
+                document.getElementById('hearts').style.display='none';
+                document.getElementById('diams').style.display='none';
+                
+                for(var i=0;i<cards.length;i++)
+                {
+                    if(suits[i]=='hearts')
+                    {
+                        document.getElementById('selection'+(i+1)).innerHTML='&hearts;';
+                        SUITCOUNTER++;
+                    }
+                    if(suits[i]=='diams')
+                    {
+                        document.getElementById('selection'+(i+1)).innerHTML='&diams;';
+                        SUITCOUNTER++;
+                    }
+                }
+            }
+            if(color=='black')
+            {
+                document.getElementById('spades').style.display='none';
+                document.getElementById('clubs').style.display='none';
+                
+                for(var i=0;i<cards.length;i++)
+                {
+                    if(suits[i]=='spades')
+                    {
+                        document.getElementById('selection'+(i+1)).innerHTML='&spades;';
+                        SUITCOUNTER++;
+                    }
+                    if(suits[i]=='clubs')
+                    {
+                        document.getElementById('selection'+(i+1)).innerHTML='&clubs;'; 
+                        SUITCOUNTER++;
+                    }
+                }
+            }
+         
+            if(SUITCOUNTER>=2)
+            {
+                //document.getElementById("presensing").innerHTML="Great!";
+                //document.getElementById("sensing").innerHTML="";
+                myopiaHighMedLowDisplay(cards,highmedlow,spotcourt);
+                SUITCOUNTER=0;
+            }
+        }
+        function myopiaSuitDisplay(chosenColor,cards,colors,suits,highmedlow,spotcourt)
+        {
+            var sensing=document.getElementById('sensing');
+            
+            sensing.innerHTML+="<b id='subsensing'>Now, I'm sensing...</b><br>";
+            
+            if(colors[0]=="darkred"||colors[1]=="darkred")
+            {            
+                sensing.innerHTML+="<input type='button' value='&hearts;' id='hearts' onClick='myopiaCheckSuit(\"hearts\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\",\"darkred\");this.style.display=\"none\";' style='font-size:100px;color:darkred;'>&nbsp;";
+                sensing.innerHTML+="<input type='button' value='&diams;' id='diams' onClick='myopiaCheckSuit(\"diams\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\",\"darkred\");this.style.display=\"none\";' style='font-size:100px;color:darkred;'>&nbsp;";
+            }
+            if(colors[0]=="black"||colors[1]=="black")
+            {  
+                sensing.innerHTML+="<input type='button' value='&spades;' id='spades' onClick='myopiaCheckSuit(\"spades\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\",\"black\");this.style.display=\"none\";' style='font-size:100px;'>&nbsp;";
+                sensing.innerHTML+="<input type='button' value='&clubs;' id='clubs' onClick='myopiaCheckSuit(\"clubs\",\""+cards+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\",\"black\");this.style.display=\"none\";' style='font-size:100px;'>&nbsp;";
+            }
+        }
+        function myopiaColorDisplay(chosenColor,cards,colors,suits,highmedlow,spotcourt)
+        {
+            cards=cards.split(",");
+            colors=colors.split(",");
+            suits=suits.split(",");
+            var chosenColorCount=0;
+
+            for(var i=0;i<colors.length;i++)
+            {
+                if(colors[i]=="darkred")
+                {
+                    document.getElementById("selection"+(i+1)).style.color="darkred";
+                    document.getElementById("selection"+(i+1)).style.borderColor="darkred";
+                }
+                else
+                {
+                    document.getElementById("selection"+(i+1)).style.color="black";
+                    document.getElementById("selection"+(i+1)).style.borderColor="black";
+                }
+                if(chosenColor==colors[i])
+                    chosenColorCount++;
+            }
+
+            document.getElementById('presensing').innerHTML=(chosenColorCount>0)?"Yes. ":"No. ";
+            document.getElementById('sensing').innerHTML="";
+            myopiaSuitDisplay(chosenColor,cards,colors,suits,highmedlow,spotcourt);
+        }
+        function myopiaStart(estID)
+        {
+            var mainpage=document.getElementById('myopiamain');
+            var selections=getSelections(estID);
+            var suits=[];
+            selections=selections.split("|");
+            cards=selections[0].split(",");
+            colors=selections[1].split(",");
+            highmedlow=[];
+            spotcourt=[];
+            
+            suits.push(getSuit(cards[0]));
+            suits.push(getSuit(cards[1]));
+            
+            for(var i=0;i<cards.length;i++)
+            {
+                highmedlow.push(getHighMedLow(cards[i]));
+                spotcourt.push(getSpotCourt(cards[i]));
+            }
+            
+            mainpage.innerHTML+="<br><b id='presensing' style='color:darkgreen;position:relative;top:-200px;'>I'm sensing a </b><b style='color:darkgreen;position:relative;top:-200px;' id='sensing'><input type='button' value='Red' onClick='javascript:myopiaColorDisplay(\"darkred\",\""+cards+"\",\""+colors+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");' style='font-size:70px;'> or <input type='button' value='Black' onClick='javascript:myopiaColorDisplay(\"black\",\""+cards+"\",\""+colors+"\",\""+suits+"\",\""+highmedlow+"\",\""+spotcourt+"\");' style='font-size:70px;'> card...</b><br>";
+            mainpage.innerHTML+="<input type='button' value='Card Left Answer' id='selectionanswer1' onClick='javascript:showSelection(\""+2+"\",\""+cards[1]+"\",\""+colors[1]+"\");' style='font-size:50px;position:relative;top:-200px;'>&nbsp;";
+            mainpage.innerHTML+="<input type='button' value='Card Right Answer' id='selectionanswer2' onClick='javascript:showSelection(\""+1+"\",\""+cards[0]+"\",\""+colors[0]+"\");' style='font-size:50px;position:relative;top:-200px;'>&nbsp;";
+            mainpage.innerHTML+="<input type='button' value='Show Spread' id='myopiaspread' onClick='javascript:returnSpread(\""+estID+"\")' style='font-size:50px;position:relative;top:-200px;'>";
+            mainpage.innerHTML+="<br><input type='button' value='Play Again' id='myopiaplayagain' onClick='myopia();' style='font-size:50px;position:relative;top:-200px;'><br>";
+       
+        }
+        function hideEsts()
+        {
+            //Hide estimate choices
+            for(var i=3;i<50;i+=3)
+                document.getElementById('est'+i).style.display='none';
+        }
+        function returnSpread(estID)
+        {
+           var min,
+               max;
+           var estimate=document.getElementById('est'+estID).value;
+           estimate=parseInt(estimate);
+           min=(estimate-3);
+           max=(estimate+2);
+
+           showDeck(min,max);
+        }
+        function getSelections(estID)
+        {
+           var cards=[], //selections
+              colors=[]; //selection colors
+           var min, 
+               max;
+
+           var estimate=document.getElementById('est'+estID).value;
+           estimate=parseInt(estimate);
+           min=(estimate-3);
+           max=(estimate+2);
+           
+           pos=getRand(min,max-1);
+           pos2=pos+1;
+           
+           //window.alert(estimate);
+           
+           cards.push(DECK[pos]);
+           var color=(isRed(DECK[pos]))?"darkred":"black";
+           colors.push(color);
+           cards.push(DECK[pos2]);
+           var color2=(isRed(DECK[pos2]))?"darkred":"black";
+           colors.push(color2);
+           
+           return cards+"|"+colors;
+               
+        }
+        function showSelection(ID,card,color)
+        {
+            var selection=document.getElementById('selection'+ID);
+            selection.innerHTML="<b style='color:"+color+";'>"+card+"</b>";
+        }
+        function myopia()
+        { 
+          window.scrollTo(0,0);
+          hideDivs();
+          //Cleanup: hide stuff if there. . .
+          if(document.body.contains(document.getElementById('psych')))
+              document.getElementById('psych').style.display='none';
+          if(document.body.contains(document.getElementById('cutcard')))
+              document.getElementById('cutcard').style.display='none';
+          if(document.body.contains(document.getElementById('distance')))
+              document.getElementById('distance').style.display='none';
+          if(document.body.contains(document.getElementById('dist')))
+              document.getElementById('dist').style.display='none';
+          showDiv("myopia"); 
+          var mainpage=document.getElementById('myopiamain');
+          mainpage.innerHTML="<b style='font-size:80px;color:gray;'>Two adjacent cards are selected</b><br><br>"
+          mainpage.innerHTML+="<b id='selection2' style='color:darkgreen;' class='myopia'>?</b>&nbsp;<b id='selection1' style='color:darkgreen;' class='myopia'>?</b><br><br>";
+          mainpage.innerHTML+="<b style='font-size:80px;color:gray;position:relative;top:-100px;'>Cut Estimate:</b></b>&nbsp;<b id='estAns' style='font-size:80px;color:gray;position:relative;top:-100px;'></b><br>";
+        
+          for(var i=3;i<50;i+=3)
+              mainpage.innerHTML+="<input id='est"+i+"' type='button' value='"+i+"' style='font-size:50px;position:relative;top:-125px;' onClick='javascript:myopiaStart(\""+i+"\");document.getElementById(\"estAns\").innerHTML=this.value;hideEsts();'>&nbsp;";
+        }*/
+		function showGames()
+		{
+			
+			var alert=document.getElementById('alert1');
+			
+			alert.style.visibility="visible";
+			alert.style.color="darkgreen";
+			alert.innerHTML="<br><br><br><b>Games:</b><br>";
+			alert.innerHTML+="<input type='button' value='Next Card' onClick='javascript:nextCard();' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Which Cards?' onClick='javascript:whichCards();' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Spot the Lie!' onClick='javascript:spotTheLie(false);' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Mixed Spot the Lie!' onClick='javascript:spotTheLie(true);' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Cards and Numbers' onClick='javascript:cardsAndNumbers();' style='font-size:50px;'><br>";
+            //alert.innerHTML+="<input type='button' value='A.C.A.A.N.' onClick='javascript:setPos(true,false,2);NAMED=POS;displayCard(true,false,3);showDiv(\"acaan\");showSpecGuessButton();hideSpecGuessButton();ACAAN(POS,NAMED);' style='font-size:50px;'><br>";
+            //alert.innerHTML+="<input type='button' value='MYOPIA Inspired' onClick='javascript:myopia();' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Order it! Forward' onClick='javascript:orderIt(\"forward\",0,2);' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Order it! Random Cut' onClick='javascript:orderIt(\"forward\","+getRand(13,39)+",2);' style='font-size:50px;'><br>";
+			alert.innerHTML+="<input type='button' value='Order it! Backward' onClick='javascript:orderIt(\"backward\",51,2);' style='font-size:50px;'><br>";
+			alert.innerHTML+=TAP_OR_CLICK;
 		}
 		function isNatural(card,pos)
 		{
@@ -798,7 +1486,7 @@
 				display:none;
 				z-index:100;
 			}
-			span#alert,span#alert2{
+			span#alert,span#alert2, .alerts{
 				z-index:200;
 				position:absolute;
 				top:0px;
@@ -838,7 +1526,7 @@
 	</head>
 	<body>
 		<b id='pre-STATE'>DECK: FACE-</b><b id="STATE"><script language="JavaScript" type="text/javascript">document.write(STATE);</script></b>
-		<input type="button" value="Spread" class="mainmenu" onClick="javascript:showDeck(0,DECK.length,'alert');">
+		<input type="button" value="Spread" class="mainmenu" onClick="javascript:showDeck(0,DECK.length,'alert1');">
 		<!-- Cut Off Portion Buttons-->
 		<input type="button" value="Cut Off" class="mainmenu" onClick="javascript:preCutOff();">
 		<!-- Show Top / Bottom Card Buttons -->
@@ -850,6 +1538,8 @@
 		<input type="button" value="4 of a kind" class="mainmenu" onClick="javascript:guessGroup('Four of a Kind');">
 		<!-- Guess Spades -->
 		<input type="button" value="Suit" class="mainmenu" onClick="javascript:guessGroup('Suit');">
+		<!-- Games -->
+		<input type="button" value="Games" class="mainmenu" onClick="javascript:showGames();">
 		
 		<!-- Flip/Face Deck -->
 		<script language="JavaScript" type="text/javascript">
@@ -917,7 +1607,9 @@
 	<span id="distance"></span>
 	<br><br>
 	<tt class="note">* = Natural</tt>
-	<span id="alert" onClick="javascript:this.style.visibility='hidden';window.scrollTo(0,0);"></span>
-	<span id="alert2" onClick="javascript:this.style.visibility='hidden';window.scrollTo(0,0);"></span>
+    <script language="JavaScript" type="text/javascript">
+	     for(var x=0;x<(DECK.length+4);x++) //Create Place holders for Alerts
+	         document.write('<span id="alert'+(parseInt(x)+1)+'" class="alerts" onClick="javascript:this.style.visibility=\'hidden\';window.scrollTo(0,0);"></span>');
+    </script>
 	</body>
 </html>
